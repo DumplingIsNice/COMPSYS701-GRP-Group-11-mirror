@@ -165,10 +165,41 @@ Data Formats
 - How to link? Develop with System J?
 
 ## To Ask:
-- ReCOP Assembler?
+Is this recorded?
+
+**Major Gaps in Workflow:**
+- ReCOP Assembler? What are the aspects of ReCOP we have to develope in software?
 	- *"software developed using SystemGALS style specifications; those specifications will be manually mapped on software in C and ReCOP assembly language"*
-- SystemJ software?
-- Project Technical Notes?
-- Missing one ASP in specification!
-	- IO-ASP
-	- 2 DP-ASP
+- SystemJ developement?
+
+**Check:**
+- Nio II will require the on-chip SRAM, SDRAM and FLASH. The ReCOP utilises M4K RAM blocks for its program and data memory.
+	- Are each of these memories reserved for Nios II? Can we and should we interface with it directly (bypassing Nios II and/or ReCOP)?
+
+- **As specified in the IRP brief in relation to our GRP:** 
+	- Is it a requirement that our IRP must be able to operate on both arrays through direct memory access and streamed data from ASP? the ASP need to directly interface with memory.
+		- Where would this data be if stored in memory?
+		- The loading of data, we have some options: 
+			- Send data packages like assignment two. 
+			- Send address and the DP perform DMA.
+				- Through TDMA-MIN ports or ReCOP.
+	- Since the mentioned example described 24-bit word signed integer as the data... Is this a specification for our project or a suggestion? We only have access to 16-bit or 32-bit bus line in for example, the SDRAM. This will impact how we plan to store these data in memory (in 32-bit alignments) and our message format.
+	- Specification wise, is our IRP DP must be multi-functional? How many? Yes, we will have to send config message for various parameters, but distinctly different functions.
+		- ADC/DAC-ASP is part of GRP?
+
+**Pipelining Logic:**
+		- **Unilateral info-passing** - Dp-ASP only receives infomation and forwards address
+			- NEVER sends infomation to itself OR returns infomation to source!!!
+
+**GRP:**
+- Where do custom instructions fit in our HMPSoC design?
+- What is the interaction between Nios II and ReCOP? 
+	- Nios II - handles human-computer interface and commands ReCOP to perform configuration and pipelining.e
+		- Logic is encased in Nios II software, the commands to ReCOP simply executes these commands.
+- We assume the interaction between ReCOP and DP are only configurations. The DP will be configured to run in some order on the data from the ADC-ASP. But never reports to ReCOP.
+
+**ReCOP:**
+- What is our external enviroment? Do we have any uses for SOP and SIP?
+- What is `we` in the memory interface of ReCOP?
+- Where should we place our what avanue (TDMA-MIN or ReCOP or Avalon) should we perform DMA from?
+- What should be our FIFO buffer be with the DP(s)?
