@@ -22,6 +22,7 @@ f_tone = f_0 * k
 x = np.arange(samples)  # SAMPLES (not time!)
 y_sin = np.sin(2 * np.pi * (f_tone / f_sample) * x)
 
+
 # Estimate
 cos_w = math.cos(2 * np.pi * (f_tone / f_sample))  # cos(w)
 n_sin_w = -math.sin(2 * np.pi * (f_tone / f_sample))  # -sin(w)
