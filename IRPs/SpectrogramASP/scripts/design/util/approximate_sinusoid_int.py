@@ -90,6 +90,9 @@ def approximate_sinusoid_int(
     cos_w = math.cos(2 * np.pi * frequency)
     sin_nw = -math.sin(2 * np.pi * frequency)  # sin(-w) = -sin(w)
 
+    cos_w_int = to_fixed_point_int(cos_w, SINUSOID_FXP_RANGE)
+    sin_nw_int = to_fixed_point_int(sin_nw, SINUSOID_FXP_RANGE)
+
     y_cos_est[0] = to_fixed_point_int(1, SINUSOID_FXP_RANGE)
     y_cos_est[-1] = to_fixed_point_int(cos_w, SINUSOID_FXP_RANGE)
 
@@ -99,8 +102,19 @@ def approximate_sinusoid_int(
     for (idx, _) in enumerate(y_cos_est[1:]):
         # y[n] = 2*cos(w)*y[n-1] - y[n-2]
         idx = idx + 1  # offset since first value already assigned
-        y_cos_est[idx] = int(int(2 * cos_w * y_cos_est[idx - 1]) - y_cos_est[idx - 2])
-        y_sin_est[idx] = int(int(2 * cos_w * y_sin_est[idx - 1]) - y_sin_est[idx - 2])
+        # right_shift 2*cosw*y[n-1] to remove scaling from cosw
+        y_cos_est[idx] = int(
+            np.right_shift(
+                int(2 * cos_w_int * y_cos_est[idx - 1]), int_fixed_point_bits - 1
+            )
+            - y_cos_est[idx - 2]
+        )
+        y_sin_est[idx] = int(
+            np.right_shift(
+                int(2 * cos_w_int * y_sin_est[idx - 1]), int_fixed_point_bits - 1
+            )
+            - y_sin_est[idx - 2]
+        )
 
     if normalise_estimate:
         # Normalise for plotting comparison

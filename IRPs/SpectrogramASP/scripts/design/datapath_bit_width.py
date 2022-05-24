@@ -12,7 +12,7 @@ import util.approximate_sinusoid_int as u_asi
 # fig.show()
 
 # Integer Representation Error (Implementation)
-k: int = 30
+k: int = 20
 bits: int = 16
 (df, x, ys) = u_asi.approximate_sinusoid_int(
     512, 48e3 / 2, k, bits, debug=True, normalise_estimate=True
