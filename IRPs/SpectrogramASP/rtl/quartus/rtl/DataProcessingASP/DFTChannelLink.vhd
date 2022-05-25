@@ -36,7 +36,7 @@ begin
         variable    cos_w           : signed(sinusoid_word_length-1 downto 0);
         variable    yn1             : signed(sinusoid_word_length-1 downto 0);
         variable    yn2             : signed(sinusoid_word_length-1 downto 0);
-        variable    prev_sum        : signed(input_word_length + natural(ceil(log2(real(input_width))))-1 downto 0);
+        variable    prev_sum        : signed(input_word_length +1 + natural(ceil(log2(real(input_width))))-1 downto 0);
 
         -- output regs
         variable    yn              : signed(sinusoid_word_length-1 downto 0);

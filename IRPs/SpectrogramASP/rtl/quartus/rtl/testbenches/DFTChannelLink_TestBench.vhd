@@ -90,6 +90,6 @@ begin
     clk <= not clk after CLK_PERIOD/2;
     t_rst <= '0' after CLK_PERIOD;
 
-    placeholder <= '1'; -- must be present for synthesiser to not optimise entity away
+    placeholder <= clk; -- must be present for synthesiser to not optimise entity away
 
 end test;
