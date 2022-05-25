@@ -14,7 +14,7 @@ import util.approximate_sinusoid_int as u_asi
 # Integer Representation Error (Implementation)
 k: int = 20
 bits: int = 16
-(df, x, ys) = u_asi.approximate_sinusoid_int(
+(df, x, ys, _) = u_asi.approximate_sinusoid_int(
     512, 48e3 / 2, k, bits, debug=True, normalise_estimate=True
 )
 fig = px.line(df, x, ys, title="Int Sin/Cos Estimate")
@@ -37,7 +37,7 @@ max_error = np.zeros((ks.shape[0], bits.shape[0]))
 
 for (idx_k, k) in enumerate(ks):
     for (idx_b, b) in enumerate(bits):
-        (df, _, _) = u_asi.approximate_sinusoid_int(
+        (df, _, _, _) = u_asi.approximate_sinusoid_int(
             samples, sample_frequency, k, b, normalise_estimate=True
         )
         max_error[idx_k][idx_b] = max(abs(df["y_cos_error"]))
@@ -71,7 +71,7 @@ fig_hm_clip.show()
 b = 16
 df_err_trend = pd.DataFrame()
 for k in ks:
-    (df, _, _) = u_asi.approximate_sinusoid_int(
+    (df, _, _, _) = u_asi.approximate_sinusoid_int(
         samples, sample_frequency, k, b, normalise_estimate=True
     )
     norm_err = abs(df["y_cos_error"]) / max(df["y_cos_error"])

@@ -51,7 +51,9 @@ def dft_int16(signal, sample_frequency: int):
     signal = np.array(signal).astype(int)
 
     for (idx, k) in enumerate(ks):
-        (df, _, _) = u_asi.approximate_sinusoid_int(samples, sample_frequency, k, bits)
+        (df, _, _, _) = u_asi.approximate_sinusoid_int(
+            samples, sample_frequency, k, bits
+        )
         ref_cos = np.array(df["y_cos_est"]).astype(int)
         ref_sin = np.array(df["y_sin_est"]).astype(int)
 
