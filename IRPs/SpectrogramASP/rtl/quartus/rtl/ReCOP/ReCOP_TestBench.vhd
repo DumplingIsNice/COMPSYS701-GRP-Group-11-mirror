@@ -13,14 +13,26 @@ entity ReCOP_TestBench is
 end entity ReCOP_TestBench;
 
 architecture test of ReCOP_TestBench is
+
     component ReCOPStackPointer_TestBench is
         port (
             placeholder     : out std_logic
         );
     end component ReCOPStackPointer_TestBench;
+
+    component ReCOPAddressRegister_TestBench is
+        port (
+            placeholder     : out std_logic
+        );
+    end component ReCOPAddressRegister_TestBench;
 begin
     
     StackPointerTB: ReCOPStackPointer_TestBench
+        port map (
+            placeholder => open
+        );
+
+    AddressRegisterTB: ReCOPAddressRegister_TestBench
         port map (
             placeholder => open
         );
