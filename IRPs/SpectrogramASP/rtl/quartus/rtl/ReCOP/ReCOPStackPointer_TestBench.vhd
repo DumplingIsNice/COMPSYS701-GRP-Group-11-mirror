@@ -42,9 +42,9 @@ architecture rtl of ReCOPStackPointer_TestBench is
     signal  clk             : std_logic     := '0';
     signal  rst             : std_logic     := '0';
     -- control
-    signal  wr_SP           : std_logic;
-    signal  mux_select      : std_logic_vector(1 downto 0);
-    signal  push_not_pull   : std_logic;
+    signal  wr_SP           : std_logic     := '0';
+    signal  mux_select      : std_logic_vector(1 downto 0) := (others => '0');
+    signal  push_not_pull   : std_logic     := '0';
     -- inputs
     signal  DM_OUT          : recop_mem_addr;
     signal  immediate       : recop_mem_addr;
@@ -76,7 +76,6 @@ begin
     placeholder <= clk;
 
     test: process
-        variable state : natural := 0;
         variable prev_SP        : recop_mem_addr;
         variable prev_SP_inc    : recop_mem_addr;
     begin
@@ -161,7 +160,20 @@ begin
         assert (SP_incremented = std_logic_vector(unsigned(SP) + to_unsigned(1, SP_incremented'length)))
             report "Push failed: SP_incremented incorrect" severity warning;
 
-        
+
+        -- Test Reset
+        rst <= '1';
+
+        prev_SP := SP; prev_SP_inc := SP_incremented;
+        wait until rising_edge(clk); wait for CLK_PERIOD/10; -- delay for delta cycles
+
+        rst <= '0';
+        assert (SP = SP_init)
+            report "Reset failed: SP not initialised" severity warning;
+        assert (SP_incremented = std_logic_vector(unsigned(SP_init) + to_unsigned(1, SP_incremented'length)))
+            report "Reset failed: SP_incremented incorrect" severity warning;
+
+
         -- Test Load DM_OUT
         -- value from DM is faked
         wr_SP <= '1';

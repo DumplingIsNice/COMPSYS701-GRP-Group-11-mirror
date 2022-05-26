@@ -35,24 +35,28 @@ begin
     begin
         if rising_edge(clk) then
 
-            if (wr_SP = '1') then
-                case mux_select is
-                    when "00" =>
-                        -- write +-SR (push or pull/pop)
-                        if (push_not_pull = '1') then
-                            v_SR := std_logic_vector(unsigned(v_SR) + to_unsigned(1, v_SR'length));
-                        else
-                            v_SR := std_logic_vector(unsigned(v_SR) - to_unsigned(1, v_SR'length));
-                        end if;
-                    when "01" =>
-                        -- write DM_OUT (data memory output)
-                        v_SR := DM_OUT;
-                    when "10" =>
-                        -- write immediate (from instruction operand)
-                        v_SR := immediate;
-                    when others =>
-                        -- invalid
-                end case;
+            if (rst = '1') then
+                v_SR := SP_init;
+            else
+                if (wr_SP = '1') then
+                    case mux_select is
+                        when "00" =>
+                            -- write +-SR (push or pull/pop)
+                            if (push_not_pull = '1') then
+                                v_SR := std_logic_vector(unsigned(v_SR) + to_unsigned(1, v_SR'length));
+                            else
+                                v_SR := std_logic_vector(unsigned(v_SR) - to_unsigned(1, v_SR'length));
+                            end if;
+                        when "01" =>
+                            -- write DM_OUT (data memory output)
+                            v_SR := DM_OUT;
+                        when "10" =>
+                            -- write immediate (from instruction operand)
+                            v_SR := immediate;
+                        when others =>
+                            -- invalid
+                    end case;
+                end if;
             end if;
 
             SP_incremented <= std_logic_vector(unsigned(v_SR) + to_unsigned(1, v_SR'length)); -- use output value of v_SR
