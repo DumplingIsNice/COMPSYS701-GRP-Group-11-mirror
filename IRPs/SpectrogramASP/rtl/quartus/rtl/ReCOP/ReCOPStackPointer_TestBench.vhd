@@ -29,7 +29,7 @@ architecture rtl of ReCOPStackPointer_TestBench is
             
             -- inputs
             DM_OUT          : in recop_mem_addr;
-            immediate       : in recop_mem_addr;
+            operand         : in recop_mem_addr;
             -- outputs
             SP              : out recop_mem_addr;
             SP_incremented  : out recop_mem_addr
@@ -47,7 +47,7 @@ architecture rtl of ReCOPStackPointer_TestBench is
     signal  push_not_pull   : std_logic     := '0';
     -- inputs
     signal  DM_OUT          : recop_mem_addr;
-    signal  immediate       : recop_mem_addr;
+    signal  operand         : recop_mem_addr;
     -- outputs
     signal  SP              : recop_mem_addr;
     signal  SP_incremented  : recop_mem_addr;
@@ -66,7 +66,7 @@ begin
             push_not_pull => push_not_pull,
 
             DM_OUT => DM_OUT,
-            immediate => immediate,
+            operand => operand,
 
             SP => SP,
             SP_incremented => SP_incremented
@@ -132,18 +132,18 @@ begin
             report "Pull Fail failed: SP_incremented incorrect" severity warning;
 
         
-        -- Test Load Immediate
+        -- Test Load operand
         wr_SP <= '1';
         mux_select <= "10";
-        immediate <= std_logic_vector(to_unsigned(54321, SP'length));
+        operand <= std_logic_vector(to_unsigned(54321, SP'length));
 
         prev_SP := SP; prev_SP_inc := SP_incremented;
         wait until rising_edge(clk); wait for CLK_PERIOD/10;
 
         assert (SP = std_logic_vector(to_unsigned(54321, SP'length)))
-            report "Immediate failed: SP not updated" severity warning;
+            report "operand failed: SP not updated" severity warning;
         assert (SP_incremented = std_logic_vector(unsigned(SP) + to_unsigned(1, SP_incremented'length)))
-            report "Immediate failed: SP_incremented incorrect" severity warning;
+            report "operand failed: SP_incremented incorrect" severity warning;
 
 
         -- Test Push

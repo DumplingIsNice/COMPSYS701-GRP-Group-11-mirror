@@ -8,7 +8,6 @@ use work.ReCOPTypes.all;
 entity ReCOPStackPointer is
     generic (
         SP_init         : recop_mem_addr    := (others => '0')
-        -- TODO: replace with TYPES from library!
     );
     port (
         clk             : in std_logic;
@@ -20,7 +19,7 @@ entity ReCOPStackPointer is
 
         -- inputs
         DM_OUT          : in recop_mem_addr;
-        immediate       : in recop_mem_addr;
+        operand         : in recop_mem_addr;
         -- outputs
         SP              : out recop_mem_addr;
         SP_incremented  : out recop_mem_addr
@@ -51,8 +50,8 @@ begin
                             -- write DM_OUT (data memory output)
                             v_SR := DM_OUT;
                         when "10" =>
-                            -- write immediate (from instruction operand)
-                            v_SR := immediate;
+                            -- write operand (from instruction operand)
+                            v_SR := operand;
                         when others =>
                             -- invalid
                     end case;

@@ -20,7 +20,7 @@ entity ReCOPAddressRegister is
         Ry                  : in recop_reg;
         SP_incremented      : in recop_mem_addr;
         SP                  : in recop_mem_addr;
-        immediate           : in recop_reg;
+        operand           : in recop_reg;
         -- outputs
         DM_ADR              : out recop_mem_addr
     );
@@ -49,8 +49,8 @@ begin
                             -- register Ry
                             v_AR := Ry;
                         when "11" =>
-                            -- immediate (instruction operand)
-                            v_AR := immediate;
+                            -- operand (instruction operand)
+                            v_AR := operand;
                         when others =>
                             -- do nothing;
                     end case;

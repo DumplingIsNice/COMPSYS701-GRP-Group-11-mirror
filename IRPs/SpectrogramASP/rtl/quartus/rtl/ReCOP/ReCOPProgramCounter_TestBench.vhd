@@ -28,7 +28,7 @@ architecture rtl of ReCOPProgramCounter_TestBench is
             -- inputs
             DM_OUT          : in recop_mem_addr;
             Ry              : in recop_reg;
-            immediate       : in recop_mem_addr;
+            operand         : in recop_mem_addr;
             -- outputs
             PM_ADR              : out recop_mem_addr
         );
@@ -45,7 +45,7 @@ architecture rtl of ReCOPProgramCounter_TestBench is
     -- inputs
     signal  DM_OUT          : recop_mem_addr;
     signal  Ry              : recop_reg;
-    signal  immediate       : recop_mem_addr;
+    signal  operand         : recop_mem_addr;
     -- outputs
     signal  PM_ADR          : recop_mem_addr;
 begin
@@ -63,7 +63,7 @@ begin
 
             DM_OUT => DM_OUT,
             Ry => Ry,
-            immediate => immediate,
+            operand => operand,
 
             PM_ADR => PM_ADR
         );
@@ -104,16 +104,16 @@ begin
             report "PC+1 Fail failed: PM_ADR was updated" severity warning;
 
         
-        -- Test Load Immediate
+        -- Test Load operand
         wr_PC <= '1';
         mux_select <= "01";
-        immediate <= std_logic_vector(to_unsigned(54321, PM_ADR'length));
+        operand <= std_logic_vector(to_unsigned(54321, PM_ADR'length));
 
         prev_PM_ADR := PM_ADR;
         wait until rising_edge(clk); wait for CLK_PERIOD/10;
 
         assert (PM_ADR = std_logic_vector(to_unsigned(54321, PM_ADR'length)))
-            report "Immediate failed: PM_ADR not updated" severity warning;
+            report "operand failed: PM_ADR not updated" severity warning;
 
 
         -- Test PC+1

@@ -19,7 +19,7 @@ entity ReCOPProgramCounter is
         -- inputs
         DM_OUT          : in recop_mem_addr;
         Ry              : in recop_reg;
-        immediate       : in recop_mem_addr;
+        operand         : in recop_mem_addr;
         -- outputs
         PM_ADR          : out recop_mem_addr
     );
@@ -42,8 +42,8 @@ begin
                             -- PC+1
                             v_PC := std_logic_vector(unsigned(v_PC) + to_unsigned(1, v_PC'length));
                         when "01" =>
-                            -- write immediate (from instruction operand)
-                            v_PC := immediate;
+                            -- write operand (from instruction operand)
+                            v_PC := operand;
                         when "10" =>
                             -- write Ry (from register file)
                             v_PC := Ry;

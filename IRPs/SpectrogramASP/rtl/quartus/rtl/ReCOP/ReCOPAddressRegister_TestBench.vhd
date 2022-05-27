@@ -29,7 +29,7 @@ architecture test of ReCOPAddressRegister_TestBench is
             Ry                  : in recop_reg;
             SP_incremented      : in recop_mem_addr;
             SP                  : in recop_mem_addr;
-            immediate           : in recop_reg;
+            operand             : in recop_reg;
             -- outputs
             DM_ADR              : out recop_mem_addr
         );
@@ -49,7 +49,7 @@ architecture test of ReCOPAddressRegister_TestBench is
     signal Ry                   : recop_reg           := std_logic_vector(to_unsigned(test_base_addr+2, recop_reg'length));
     signal SP_incremented       : recop_mem_addr      := std_logic_vector(to_unsigned(test_base_addr, recop_mem_addr'length));
     signal SP                   : recop_mem_addr      := std_logic_vector(to_unsigned(test_base_addr+1, recop_mem_addr'length));
-    signal immediate            : recop_reg           := std_logic_vector(to_unsigned(test_base_addr+3, recop_reg'length));
+    signal operand              : recop_reg           := std_logic_vector(to_unsigned(test_base_addr+3, recop_reg'length));
     -- outputs  
     signal DM_ADR               : recop_mem_addr;
 begin
@@ -68,7 +68,7 @@ begin
             Ry => Ry,
             SP_incremented => SP_incremented,
             SP => SP,
-            immediate => immediate,
+            operand => operand,
             -- outputs
             DM_ADR => DM_ADR
         );
