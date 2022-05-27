@@ -1,0 +1,16 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+
+library work;
+use work.TdmaMinTypes.all;
+
+entity ReCOP is 
+	port(clk : in std_logic;
+		  irq : in std_logic;
+		  clr_irq : out std_logic
+		);  
+end entity
+
+
+			
