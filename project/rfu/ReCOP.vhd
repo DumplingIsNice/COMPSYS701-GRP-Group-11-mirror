@@ -9,7 +9,7 @@ use work.TdmaMinTypes.all;
 entity ReCOP is  
 	port(clock, irq : in std_logic;
 		  message : in tdma_min_port;
-		  data_ctrl : in std_logic_vector(7 downto 0);
+		  --data_ctrl : in std_logic_vector(7 downto 0);
 		  send : out tdma_min_port;
 		  clr_irq : out std_logic
 		);  
