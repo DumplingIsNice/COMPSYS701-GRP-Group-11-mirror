@@ -1,0 +1,17 @@
+// Open shell in environment:
+$ cd "..."
+$ pipenv shell
+
+// Install packages:
+$ pipenv install numpy			// most recent
+$ pipenv install numpy==X.XX.X	// lock version
+$ pipenv install pytest --dev	// dev dependencies
+
+// Lock our stable environment:
+$ pipenv lock
+// Install the stable environment in production:
+% pipenv install --ignore-pipfile	// install from Pipfile.lock
+
+
+// Exit our shell:
+$ exit
