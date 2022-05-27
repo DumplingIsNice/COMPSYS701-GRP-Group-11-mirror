@@ -1232,3 +1232,11 @@ run
 #    Time: 76 ns  Iteration: 0  Instance: /recop_testbench/StackPointerTB
 # ** Note: ReCOPAddressRegister Test: OK
 #    Time: 96 ns  Iteration: 0  Instance: /recop_testbench/AddressRegisterTB
+restart -f
+run
+# ** Note: ReCOPStackPointer Test: OK
+#    Time: 76 ns  Iteration: 0  Instance: /recop_testbench/StackPointerTB
+# ** Note: ReCOPAddressRegister Test: OK
+#    Time: 96 ns  Iteration: 0  Instance: /recop_testbench/AddressRegisterTB
+# End time: 01:35:47 on May 27,2022, Elapsed time: 0:49:21
+# Errors: 77, Warnings: 34

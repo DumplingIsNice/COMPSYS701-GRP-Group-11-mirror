@@ -1,4 +1,15 @@
-C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer_TestBench.vhd {1 {vcom -work ReCOP_sim -2002 -explicit -stats=none C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer_TestBench.vhd
+C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPAddressRegister_TestBench.vhd {1 {vcom -work ReCOP_sim -2002 -explicit -stats=none C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPAddressRegister_TestBench.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package MATH_REAL
+-- Loading package ReCOPTypes
+-- Compiling entity ReCOPAddressRegister_TestBench
+-- Compiling architecture test of ReCOPAddressRegister_TestBench
+
+} {} {}} C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer_TestBench.vhd {1 {vcom -work ReCOP_sim -2002 -explicit -stats=none C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer_TestBench.vhd
 Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
 -- Loading package STANDARD
 -- Loading package TEXTIO
@@ -9,15 +20,16 @@ Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  
 -- Compiling entity ReCOPStackPointer_TestBench
 -- Compiling architecture rtl of ReCOPStackPointer_TestBench
 
-} {} {}} C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer.vhd {1 {vcom -work ReCOP_sim -2002 -explicit -stats=none C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer.vhd
+} {} {}} C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOP_TestBench.vhd {1 {vcom -work ReCOP_sim -2002 -explicit -stats=none C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOP_TestBench.vhd
 Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
 -- Loading package STANDARD
 -- Loading package TEXTIO
 -- Loading package std_logic_1164
 -- Loading package NUMERIC_STD
+-- Loading package MATH_REAL
 -- Loading package ReCOPTypes
--- Compiling entity ReCOPStackPointer
--- Compiling architecture rtl of ReCOPStackPointer
+-- Compiling entity ReCOP_TestBench
+-- Compiling architecture test of ReCOP_TestBench
 
 } {} {}} C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPAddressRegister.vhd {1 {vcom -work ReCOP_sim -2002 -explicit -stats=none C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPAddressRegister.vhd
 Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
@@ -29,16 +41,15 @@ Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  
 -- Compiling entity ReCOPAddressRegister
 -- Compiling architecture rtl of ReCOPAddressRegister
 
-} {} {}} C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOP_TestBench.vhd {1 {vcom -work ReCOP_sim -2002 -explicit -stats=none {C:\Users\CM\Documents\Git\COMPSYS701-GRP-Group-11\IRPs\SpectrogramASP\rtl\quartus\rtl\ReCOP\ReCOP_TestBench.vhd}
+} {} {}} C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer.vhd {1 {vcom -work ReCOP_sim -2002 -explicit -stats=none C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer.vhd
 Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
 -- Loading package STANDARD
 -- Loading package TEXTIO
 -- Loading package std_logic_1164
 -- Loading package NUMERIC_STD
--- Loading package MATH_REAL
 -- Loading package ReCOPTypes
--- Compiling entity ReCOP_TestBench
--- Compiling architecture test of ReCOP_TestBench
+-- Compiling entity ReCOPStackPointer
+-- Compiling architecture rtl of ReCOPStackPointer
 
 } {} {}} C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPTypes.vhd {1 {vcom -work ReCOP_sim -2002 -explicit -stats=none C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPTypes.vhd
 Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
