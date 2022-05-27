@@ -31,6 +31,12 @@ architecture test of ReCOP_TestBench is
             placeholder     : out std_logic
         );
     end component ReCOPInstructionRegister_TestBench;
+
+    component ReCOPProgramCounter_TestBench is
+        port (
+            placeholder     : out std_logic
+        );
+    end component ReCOPProgramCounter_TestBench;
 begin
     
     StackPointerTB: ReCOPStackPointer_TestBench
@@ -44,9 +50,14 @@ begin
         );
 
     InstructionRegisterTB: ReCOPInstructionRegister_TestBench
-            port map (
-                placeholder => open
-            );
+        port map (
+            placeholder => open
+        );
+
+    ProgramCounterTB: ReCOPProgramCounter_TestBench
+        port map (
+            placeholder => open
+        );
 
     placeholder <= '1';
 end architecture test;
