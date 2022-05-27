@@ -1,3 +1,20 @@
+# VSCode Scripts
+.vscode/
+__pycache__/
+generated/
+
+# Quartus
+*/db/*
+*/incremental_db/*
+*/output_files/*
+*/simulation/*
+
+*.bak
+*.qws
+*.rpt
+*.txt
+
+# ModelSim
 # https://github.com/github/gitignore/blob/main/Global/ModelSim.gitignore
 # ignore ModelSim generated files and directories (temp files and so on)
 [_@]*
