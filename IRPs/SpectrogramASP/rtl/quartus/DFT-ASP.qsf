@@ -51,6 +51,8 @@ set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name VHDL_FILE rtl/ReCOP/ReCOPAddressRegister_TestBench.vhd
+set_global_assignment -name VHDL_FILE rtl/ReCOP/ReCOPAddressRegister.vhd
 set_global_assignment -name VHDL_FILE rtl/ReCOP/ReCOPTypes.vhd
 set_global_assignment -name VHDL_FILE rtl/ReCOP/ReCOP_TestBench.vhd
 set_global_assignment -name VHDL_FILE rtl/ReCOP/ReCOPStackPointer_TestBench.vhd
