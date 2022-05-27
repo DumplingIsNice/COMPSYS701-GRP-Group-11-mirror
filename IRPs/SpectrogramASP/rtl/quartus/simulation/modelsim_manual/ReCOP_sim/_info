@@ -9,26 +9,26 @@ z2
 cModel Technology
 Z0 dC:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/simulation/modelsim_manual
 Erecop_testbench
-Z1 w1653618533
+Z1 w1653620591
 Z2 DPx4 work 10 recoptypes 0 22 NPVAa3]7_Y?S[g3FnJMe@3
 Z3 DPx4 ieee 9 math_real 0 22 Sk6CSihbPL<f[^Shm]=KX0
 Z4 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
 Z5 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
 Z6 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
 R0
-Z7 8C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOP_TestBench.vhd
-Z8 FC:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOP_TestBench.vhd
+Z7 8C:\Users\CM\Documents\Git\COMPSYS701-GRP-Group-11\IRPs\SpectrogramASP\rtl\quartus\rtl\ReCOP\ReCOP_TestBench.vhd
+Z8 FC:\Users\CM\Documents\Git\COMPSYS701-GRP-Group-11\IRPs\SpectrogramASP\rtl\quartus\rtl\ReCOP\ReCOP_TestBench.vhd
 l0
 L9
 V`:Q7h:7MTbH;M9z4HR6>B3
 !s100 zIVE4gG0kY0h?M]LncV7]0
 Z9 OV;C;10.5b;63
 32
-Z10 !s110 1653618847
+Z10 !s110 1653620905
 !i10b 1
-Z11 !s108 1653618847.000000
-Z12 !s90 -reportprogress|300|-work|ReCOP_sim|-2002|-explicit|C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOP_TestBench.vhd|
-Z13 !s107 C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOP_TestBench.vhd|
+Z11 !s108 1653620905.000000
+Z12 !s90 -reportprogress|300|-work|ReCOP_sim|-2002|-explicit|C:\Users\CM\Documents\Git\COMPSYS701-GRP-Group-11\IRPs\SpectrogramASP\rtl\quartus\rtl\ReCOP\ReCOP_TestBench.vhd|
+Z13 !s107 C:\Users\CM\Documents\Git\COMPSYS701-GRP-Group-11\IRPs\SpectrogramASP\rtl\quartus\rtl\ReCOP\ReCOP_TestBench.vhd|
 !i113 1
 Z14 o-work ReCOP_sim -2002 -explicit
 Z15 tExplicit 1 CvgOpt 0
@@ -39,10 +39,10 @@ R4
 R5
 R6
 DEx4 work 15 recop_testbench 0 22 `:Q7h:7MTbH;M9z4HR6>B3
-l34
+l40
 L15
-V1JCUlNA1i3;4gKiWkBfgL0
-!s100 FS_GKkSYQJcn>i<GAn2=g3
+V2`gY=a<SeEAUQ<<Z^3b5E0
+!s100 KL4CT0JYHF^E5i3b_?3ii0
 R9
 32
 R10
@@ -185,7 +185,7 @@ R30
 R14
 R15
 Erecopinstructionregister_testbench
-Z31 w1653618838
+Z31 w1653619343
 R2
 R3
 R4
@@ -229,15 +229,103 @@ R35
 !i113 1
 R14
 R15
-Erecopstackpointer
-Z36 w1653565241
+Erecopprogramcounter
+Z36 w1653620060
 R2
 R4
 R5
 R6
 R0
-Z37 8C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer.vhd
-Z38 FC:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer.vhd
+Z37 8C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPProgramCounter.vhd
+Z38 FC:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPProgramCounter.vhd
+l0
+L8
+VkW4^mD2<bAbH0o8;LRY4K2
+!s100 [>cDbP`NYNN@hlK:]obK22
+R9
+32
+R10
+!i10b 1
+R11
+Z39 !s90 -reportprogress|300|-work|ReCOP_sim|-2002|-explicit|C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPProgramCounter.vhd|
+Z40 !s107 C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPProgramCounter.vhd|
+!i113 1
+R14
+R15
+Artl
+R2
+R4
+R5
+R6
+DEx4 work 19 recopprogramcounter 0 22 kW4^mD2<bAbH0o8;LRY4K2
+l29
+L28
+Vo0c741hGEl?6?kJNM[E8i0
+!s100 ;;lIWUTfKH3]5>Rd<lggC1
+R9
+32
+R10
+!i10b 1
+R11
+R39
+R40
+!i113 1
+R14
+R15
+Erecopprogramcounter_testbench
+Z41 w1653620895
+R2
+R3
+R4
+R5
+R6
+R0
+Z42 8C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPProgramCounter_TestBench.vhd
+Z43 FC:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPProgramCounter_TestBench.vhd
+l0
+L9
+V3eJ0h2VRRS0lOEYb;@^5Z2
+!s100 Na4h>G7Lah8jEedYGZ[Zi0
+R9
+32
+R10
+!i10b 1
+R11
+Z44 !s90 -reportprogress|300|-work|ReCOP_sim|-2002|-explicit|C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPProgramCounter_TestBench.vhd|
+Z45 !s107 C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPProgramCounter_TestBench.vhd|
+!i113 1
+R14
+R15
+Artl
+R2
+R3
+R4
+R5
+R6
+DEx4 work 29 recopprogramcounter_testbench 0 22 3eJ0h2VRRS0lOEYb;@^5Z2
+l51
+L15
+VLAhkCd1EO:0menTYE=oJT0
+!s100 JI0m`_8?Z;Bl_:;<05QT90
+R9
+32
+R10
+!i10b 1
+R11
+R44
+R45
+!i113 1
+R14
+R15
+Erecopstackpointer
+Z46 w1653565241
+R2
+R4
+R5
+R6
+R0
+Z47 8C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer.vhd
+Z48 FC:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer.vhd
 l0
 L8
 V@ZaTOXXV3k=]b]eVBXJ7a0
@@ -247,8 +335,8 @@ R9
 R10
 !i10b 1
 R11
-Z39 !s90 -reportprogress|300|-work|ReCOP_sim|-2002|-explicit|C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer.vhd|
-Z40 !s107 C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer.vhd|
+Z49 !s90 -reportprogress|300|-work|ReCOP_sim|-2002|-explicit|C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer.vhd|
+Z50 !s107 C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer.vhd|
 !i113 1
 R14
 R15
@@ -267,21 +355,21 @@ R9
 R10
 !i10b 1
 R11
-R39
-R40
+R49
+R50
 !i113 1
 R14
 R15
 Erecopstackpointer_testbench
-Z41 w1653567966
+Z51 w1653567966
 R2
 R3
 R4
 R5
 R6
 R0
-Z42 8C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer_TestBench.vhd
-Z43 FC:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer_TestBench.vhd
+Z52 8C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer_TestBench.vhd
+Z53 FC:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer_TestBench.vhd
 l0
 L9
 VCcROX1UIXnY0hPC47PGO<0
@@ -291,8 +379,8 @@ R9
 R10
 !i10b 1
 R11
-Z44 !s90 -reportprogress|300|-work|ReCOP_sim|-2002|-explicit|C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer_TestBench.vhd|
-Z45 !s107 C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer_TestBench.vhd|
+Z54 !s90 -reportprogress|300|-work|ReCOP_sim|-2002|-explicit|C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer_TestBench.vhd|
+Z55 !s107 C:/Users/CM/Documents/Git/COMPSYS701-GRP-Group-11/IRPs/SpectrogramASP/rtl/quartus/rtl/ReCOP/ReCOPStackPointer_TestBench.vhd|
 !i113 1
 R14
 R15
@@ -312,8 +400,8 @@ R9
 R10
 !i10b 1
 R11
-R44
-R45
+R54
+R55
 !i113 1
 R14
 R15
