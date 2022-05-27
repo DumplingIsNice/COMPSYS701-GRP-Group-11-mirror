@@ -15,8 +15,8 @@ entity ReCOP_pm is
     -- IF EEPROM:
         -- pm_i
         -- rwe
-        addr : in std_logic_vector(9 downto 0);
-        pm_o : out std_logic_vector(31 downto 0)
+        addr : in std_logic_vector(ADDR_WIDTH-1 downto 0);
+        pm_o : out std_logic_vector(WORD_WIDTH-1 downto 0)
     );
 end entity;
 
@@ -33,7 +33,7 @@ begin
 			lpm_width => WORD_WIDTH,
             lpm_outdata => "REGISTERED",
 			lpm_address_control => "REGISTERED",
-			lpm_file => "ReCOP_pm.mif"
+			lpm_file => "pm.mif"
 			)
 		port map (
             inclock => clk,
