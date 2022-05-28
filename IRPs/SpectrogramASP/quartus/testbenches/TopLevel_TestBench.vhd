@@ -22,45 +22,16 @@ architecture test of TopLevel_TestBench is
         );
     end component DFTChannelLinkModules_TestBench;
 
-    component DFTChannelLink_TestBench is
-        generic (
-            input_width         : natural   := 512; -- elements
-            input_word_length   : natural   := 16;  -- bits
-            sinusoid_word_length: natural   := 16   -- bits
-        );
-        port (
-            placeholder         : out std_logic
-        );
-    end component DFTChannelLink_TestBench;
-
     signal      placeholder1    : std_logic;
-    signal      placeholder2    : std_logic;
+    signal      placeholder2    : std_logic := '1';
     
 begin
 
     ModuleTest : DFTChannelLinkModules_TestBench
-        generic map (
-            input_width => input_width,
-            input_word_length => input_word_length,
-            sinusoid_word_length => sinusoid_word_length
-        )
         port map (            
-            placeholder => placeholder2
-        );
-
-    LinkTest : DFTChannelLink_TestBench
-        generic map (
-            input_width => input_width,
-            input_word_length => input_word_length,
-            sinusoid_word_length => sinusoid_word_length
-        )
-        port map (           
             placeholder => placeholder1
-        );
-
+        );    
     
-    
-
     placeholder <= placeholder1 or placeholder2;
 
 end architecture test;
