@@ -47,6 +47,7 @@ architecture test of DFTChannelLinkModules_TestBench is
             yn2             : in signed(sinusoid_word_length-1 downto 0);
             -- outputs
             cos_w_out       : out signed(sinusoid_word_length-1 downto 0);
+            yn1_out         : out signed(sinusoid_word_length-1 downto 0);
             yn              : out signed(sinusoid_word_length-1 downto 0)
         );
     end component DFTGenerateReference;
@@ -70,6 +71,28 @@ architecture test of DFTChannelLinkModules_TestBench is
         );
     end component DFTSumCorrelation;
 
+
+    constant word_length    : natural := c_sum_out'length;
+    signal a                : signed(word_length-1 downto 0);
+    signal b                : signed(word_length-1 downto 0);
+    signal magnitude        : unsigned(word_length+1 -1 downto 0);
+
+    component DFTMagnitude is
+        generic (
+            word_length		: natural	:= 16 -- bits
+        );
+        port (
+            clk				: in std_logic;
+            rst				: in std_logic;
+    
+            -- inputs
+            a				: in signed(word_length-1 downto 0);
+            b				: in signed(word_length-1 downto 0);
+            -- outputs
+            magnitude		: out unsigned(word_length+1 -1 downto 0)
+        );
+    end component DFTMagnitude;
+
 begin
     RefStage : DFTGenerateReference
         generic map (
@@ -84,6 +107,7 @@ begin
             yn2 => t_yn2_in,
             -- outputs
             cos_w_out => open, -- goes to next in pipeline
+            yn1_out => open,
             yn => yn
         );
 
@@ -103,6 +127,52 @@ begin
             -- outputs
             c_sum_out => c_sum_out
         );
+
+    MagnitudeStage : DFTMagnitude
+        generic map (
+            word_length => word_length
+        )
+        port map (
+            clk	=> clk,
+            rst	=> rst,
+
+            -- inputs
+            a => a,
+            b => b,
+            -- outputs
+            magnitude => magnitude
+        );
+
+    test_magnitude: process
+    begin
+        a <= to_signed(2 ** 15, a'length);
+        b <= to_signed(-2 ** 15, a'length);
+        
+        wait for CLK_PERIOD;
+
+        assert (magnitude = to_unsigned(49152, magnitude'length))
+            report "magnitude incorrect" severity warning;
+
+
+        a <= to_signed(-1, a'length);
+        b <= to_signed(-1, a'length);
+        
+        wait for CLK_PERIOD;
+
+        assert (magnitude = to_unsigned(1, magnitude'length))
+            report "magnitude incorrect" severity warning;
+
+
+        a <= to_signed(0, a'length);
+        b <= to_signed(-1, a'length);
+        
+        wait for CLK_PERIOD;
+
+        assert (magnitude = to_unsigned(1, magnitude'length))
+            report "magnitude incorrect" severity warning;
+
+
+    end process test_magnitude;
 
     -- https://www.nandland.com/vhdl/examples/example-file-io.html
     -- unit_test: process
