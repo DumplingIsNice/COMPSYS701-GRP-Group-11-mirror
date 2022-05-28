@@ -52,20 +52,23 @@ architecture rtl of DFTDataPathUnit is
 	end component DFTSumCorrelation;
 
     -- output from DFTGenerateReference
-	signal yn1_out         : signed_fxp_sinusoid;
-	signal yn_out          : signed_fxp_sinusoid;
+	signal yn1_out         : signed_fxp_sinusoid        := (others => '0');
+	signal yn_out          : signed_fxp_sinusoid        := (others => '0');
 
     -- input to DFTGenerateReference (from self, or LUT)
-	signal yn1_src         : signed_fxp_sinusoid;
-	signal yn2_src         : signed_fxp_sinusoid;
+	signal yn1_src         : signed_fxp_sinusoid        := yn1_LUT;
+	signal yn2_src         : signed_fxp_sinusoid        := yn2_LUT;
 
     -- output from DFTSumCorrelation
-	signal c_sum_out       : signed_correlation_sum;
+	signal c_sum_out       : signed_correlation_sum     := (others => '0');
 
     -- input to DFTSumCorrelation (from self, or reset to 0)
-	signal c_sum_src       : signed_correlation_sum;
+	signal c_sum_src       : signed_correlation_sum     := (others => '0');
 
 begin
+
+    -- WARNING:
+    -- This circular wiring requires all outputs to be well-defined on initialisation.
 
     c_sum <= c_sum_out;
 

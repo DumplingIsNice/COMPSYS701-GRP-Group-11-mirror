@@ -15,9 +15,9 @@ entity DFTGenerateReference is
         yn1             : in signed_fxp_sinusoid;
         yn2             : in signed_fxp_sinusoid;
         -- outputs
-        cos_w_out       : out signed_fxp_sinusoid;
-        yn1_out         : out signed_fxp_sinusoid;
-        yn              : out signed_fxp_sinusoid
+        cos_w_out       : out signed_fxp_sinusoid   := (others => '0');
+        yn1_out         : out signed_fxp_sinusoid   := (others => '0');
+        yn              : out signed_fxp_sinusoid   := (others => '0')
 	);
 end entity;
 

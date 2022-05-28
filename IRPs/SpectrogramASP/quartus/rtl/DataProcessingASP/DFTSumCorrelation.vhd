@@ -15,7 +15,7 @@ entity DFTSumCorrelation is
         yn              : in signed_fxp_sinusoid;
         c_sum_in        : in signed_correlation_sum;
         -- outputs
-        c_sum_out       : out signed_correlation_sum
+        c_sum_out       : out signed_correlation_sum    := (others => '0')
 	);
 end entity;
 

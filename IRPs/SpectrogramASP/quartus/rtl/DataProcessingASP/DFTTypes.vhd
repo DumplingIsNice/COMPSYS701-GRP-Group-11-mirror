@@ -9,7 +9,7 @@ package DFTTypes is
     subtype     signed_fxp_sinusoid is      signed(SINUSOID_WORD_LENGTH-1 downto 0);
 
     constant    WINDOW_WORD_LENGTH          : natural           := 16;
-    constant    WINDOW_WIDTH               : natural           := 512;
+    constant    WINDOW_WIDTH                : natural           := 512;
     subtype     signal_word is              signed(WINDOW_WORD_LENGTH-1 downto 0);
     type        signal_window is            array (WINDOW_WIDTH-1 downto 0) of signal_word;
     subtype     signed_correlation_sum is   signed(WINDOW_WORD_LENGTH + natural(ceil(log2(real(WINDOW_WIDTH))))-1 downto 0);

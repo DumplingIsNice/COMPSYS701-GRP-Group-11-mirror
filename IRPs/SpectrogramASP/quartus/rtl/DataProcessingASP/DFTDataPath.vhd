@@ -5,6 +5,7 @@ use ieee.math_real.all;
 
 library work;
 use work.DFTTypes.all;
+use work.DFTSinusoidLUT.all;
 -- use work.TdmaMinTypes.all;
 
 entity DFTDataPath is
@@ -16,6 +17,8 @@ entity DFTDataPath is
         enable				: in std_logic; -- value of x must change each clk cycle - disable to stall operation
         rst_sinusoid		: in std_logic; -- reset sinusoid approximation and contents, but keep c_sum in pipeline
             -- redundant w/ combinatorial synthesis?
+        update_output       : in std_logic; -- update magnitudes register
+
         -- inputs
         x					: in signal_word;
         -- outputs
@@ -31,13 +34,8 @@ architecture rtl of DFTDataPath is
 
     -- each k is a harmonic to evaluate
     -- each k requires a pair of values: cos(-wk), sin(-wk)
-    type LUT_array			is array (2*K_LENGTH-1 downto 0) of signed_fxp_sinusoid;
-    type magnitudes_array	is array (k-1 downto 0) of signed_correlation_sum;
 
-    signal sinusoid_LUT		: LUT_array;
-    signal magnitudes		: magnitudes_array	:= (others => '0');
-    
-    -- <LUT>
+    signal working_magnitudes   : magnitudes_array	:= (others => (others => '0'));
 
     component DFTDataPathUnit is
         port (
@@ -70,7 +68,13 @@ architecture rtl of DFTDataPath is
         );
     end component DFTMagnitude;
 
+    signal  sinusoid_clk    : std_logic;
+    signal  sinusoid_rst    : std_logic;
+
 begin
+
+    sinusoid_clk <= clk and enable;
+    sinusoid_rst <= rst or rst_sinusoid;
 
     main: process(clk)
     begin
@@ -83,46 +87,59 @@ begin
         end if;
     end process main;
 
-    units: for k in 0 to K_LENGTH-1 generate
-        signal c_sum_re         : signed_correlation_sum;
-        signal c_sum_im         : signed_correlation_sum;
-        signal magnitude        : unsigned(signed_correlation_sum'length downto 0);
-    begin:
+    UPDATE_MAGNITUDES: process(clk)
+    begin
+        if rising_edge(clk) then
+                if rst = '1' then
+                    magnitudes <= (others => (others => '0'));
+                else
+                    if update_output = '1' then
+                        magnitudes <= working_magnitudes;
+                    end if;
+                end if;
+        end if;
+    end process UPDATE_MAGNITUDES;
 
-        ReCosUnit: DFTDataPathUnit
+    GEN_UNITS: for k in 0 to K_LENGTH-1 generate
+        signal c_sum_re         : signed_correlation_sum := (others => '0');
+        signal c_sum_im         : signed_correlation_sum := (others => '0');
+        signal magnitude        : unsigned(signal_word'length downto 0);
+    begin
+
+        ReCosUnit: entity work.DFTDataPathUnit
             port map (
-                clk => clk and enable,
-                rst => rst or rst_sinusoid,
+                clk => sinusoid_clk,
+                rst => sinusoid_rst,
                 
                 -- inputs
-                cos_w_LUT => sinusoid_LUT(2*k),
-                yn1_LUT => to_signed(1, yn1_LUT'length),
-                yn2_LUT => sinusoid_LUT(2*k),
+                cos_w_LUT => K_SINUSOID_LUT(2*k),
+                yn1_LUT => to_signed(2**15 -1, signed_fxp_sinusoid'length),
+                yn2_LUT => K_SINUSOID_LUT(2*k),
                 x => x,
                 -- outputs
                 c_sum => c_sum_re
             );
 
-        ImSinUnit: DFTDataPathUnit
+        ImSinUnit: entity work.DFTDataPathUnit
             port map (
-                clk => clk and enable,
-                rst => rst or rst_sinusoid,
+                clk => sinusoid_clk,
+                rst => sinusoid_rst,
                 
                 -- inputs
-                cos_w_LUT => sinusoid_LUT(2*k),
-                yn1_LUT => to_signed(0, yn1_LUT'length),
-                yn2_LUT => sinusoid_LUT(2*k+1),
+                cos_w_LUT => K_SINUSOID_LUT(2*k),
+                yn1_LUT => to_signed(0, signed_fxp_sinusoid'length),
+                yn2_LUT => K_SINUSOID_LUT(2*k+1),
                 x => x,
                 -- outputs
                 c_sum => c_sum_im
             );
 
-        ApproximateMagnitude : DFTMagnitude
+        ApproximateMagnitude : entity work.DFTMagnitude
             generic map (
-                word_length => signal_word'length-1
+                word_length => signal_word'length
             )
             port map (
-                clk	=> clk and enable,
+                clk	=> sinusoid_clk,
                 rst	=> rst,
 
                 -- inputs
@@ -133,7 +150,7 @@ begin
             );
         
         -- divide to input size (NOTE: magnitude is now proportional ONLY, must be scaled to original value!)
-        magnitudes(k) <= magnitude(magnitude'length-1 downto magnitude'length - signal_word'length);
-    end generate;
+        working_magnitudes(k) <= signed(magnitude(magnitude'length-1 downto magnitude'length - signal_word'length));
+    end generate GEN_UNITS;
 
 end architecture rtl;

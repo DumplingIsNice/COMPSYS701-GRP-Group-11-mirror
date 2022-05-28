@@ -16,6 +16,12 @@ end entity;
 
 architecture test of TopLevel_TestBench is
 
+    component DFT_Testbench is
+        port (
+            placeholder     : out std_logic
+        );
+    end component DFT_Testbench;
+
     component DFTChannelLinkModules_TestBench is
         port (
             placeholder         : out std_logic
@@ -23,15 +29,21 @@ architecture test of TopLevel_TestBench is
     end component DFTChannelLinkModules_TestBench;
 
     signal      placeholder1    : std_logic;
-    signal      placeholder2    : std_logic := '1';
+    signal      placeholder2    : std_logic;
     
 begin
 
+    DFTTest: DFT_Testbench
+        port map (
+            placeholder => placeholder1
+        );
+
     ModuleTest : DFTChannelLinkModules_TestBench
         port map (            
-            placeholder => placeholder1
+            placeholder => placeholder2
         );    
-    
+
+
     placeholder <= placeholder1 or placeholder2;
 
 end architecture test;
