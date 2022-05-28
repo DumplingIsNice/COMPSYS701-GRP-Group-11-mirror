@@ -60,6 +60,27 @@ np.savetxt(os.getcwd() + f"/generated/int{bits}_dft_im.txt", dft_im, fmt="%d")
 np.savetxt(os.getcwd() + f"/generated/int{bits}_dft_mag.txt", dft_magnitude, fmt="%d")
 
 
+"""VHDL LUT Values"""
+k_range = np.arange(0, samples // 2)
+sin_nwk = (pow(2, bits - 1) - 1) * np.sin(-2 * np.pi * k_range / samples)
+cos_nwk = (pow(2, bits - 1) - 1) * np.cos(-2 * np.pi * k_range / samples)
+k_as_frequencies = k_range * (sample_frequency / samples)
+
+trunc_sin_nwk = sum(sin_nwk < -pow(2, 15)) + sum(sin_nwk > pow(2, 15) - 1)
+trunc_cos_nwk = sum(cos_nwk < -pow(2, 15)) + sum(cos_nwk > pow(2, 15) - 1)
+assert trunc_sin_nwk + trunc_cos_nwk == 0  # no truncation!
+
+sin_nwk = np.clip(sin_nwk, -pow(2, 15), pow(2, 15) - 1)
+cos_nwk = np.clip(cos_nwk, -pow(2, 15), pow(2, 15) - 1)
+
+lut_values = np.ravel(np.column_stack((cos_nwk, sin_nwk)))
+np.savetxt(
+    os.getcwd() + f"/generated/LUT_values.txt",
+    lut_values,
+    fmt="to_signed(%d, signed_fxp_sinusoid'length),",
+)
+np.savetxt(os.getcwd() + f"/generated/LUT_frequencies.txt", k_as_frequencies, fmt="%d")
+
 """Visualise"""
 if PLOT_DFT:
     df = pd.DataFrame(
