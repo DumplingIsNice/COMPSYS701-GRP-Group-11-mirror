@@ -16,6 +16,7 @@ entity DFTGenerateReference is
         yn2             : in signed(sinusoid_word_length-1 downto 0);
         -- outputs
         cos_w_out       : out signed(sinusoid_word_length-1 downto 0);
+        yn1_out         : out signed(sinusoid_word_length-1 downto 0);
         yn              : out signed(sinusoid_word_length-1 downto 0)
 	);
 end entity;
@@ -45,6 +46,7 @@ begin
             end if;
 
         yn <= v_yn;
+        yn1_out <= yn1;
         cos_w_out <= cos_w;
         end if;
     end process main;
