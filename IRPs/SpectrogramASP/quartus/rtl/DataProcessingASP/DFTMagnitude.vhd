@@ -43,7 +43,7 @@ begin
 					min := unsigned(abs(a));
 				end if;
 
-				v_mag := unsigned('0' & min(a'length-1 downto 1)) + max;
+				v_mag := resize(max + unsigned('0' & min(a'length-1 downto 1)), v_mag'length);
 			end if;
 
 			magnitude <= v_mag;
