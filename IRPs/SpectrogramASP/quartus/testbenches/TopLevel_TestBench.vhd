@@ -17,11 +17,6 @@ end entity;
 architecture test of TopLevel_TestBench is
 
     component DFTChannelLinkModules_TestBench is
-        generic (
-            input_width         : natural   := 512; -- elements
-            input_word_length   : natural   := 16;  -- bits
-            sinusoid_word_length: natural   := 16   -- bits
-        );
         port (
             placeholder         : out std_logic
         );

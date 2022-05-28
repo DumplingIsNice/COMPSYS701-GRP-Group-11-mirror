@@ -2,22 +2,22 @@ library ieee;
 use ieee.numeric_std.all;
 use ieee.std_logic_1164.all;
 
+library work;
+use work.DFTTypes.all;
+
 entity DFTGenerateReference is
-	generic (
-        sinusoid_word_length        : natural   := 16   -- bits
-	);
 	port (
         clk		        : in std_logic;
         rst             : in std_logic;
 
         -- inputs from previous link
-        cos_w           : in signed(sinusoid_word_length-1 downto 0);
-        yn1             : in signed(sinusoid_word_length-1 downto 0);
-        yn2             : in signed(sinusoid_word_length-1 downto 0);
+        cos_w           : in signed_fxp_sinusoid;
+        yn1             : in signed_fxp_sinusoid;
+        yn2             : in signed_fxp_sinusoid;
         -- outputs
-        cos_w_out       : out signed(sinusoid_word_length-1 downto 0);
-        yn1_out         : out signed(sinusoid_word_length-1 downto 0);
-        yn              : out signed(sinusoid_word_length-1 downto 0)
+        cos_w_out       : out signed_fxp_sinusoid;
+        yn1_out         : out signed_fxp_sinusoid;
+        yn              : out signed_fxp_sinusoid
 	);
 end entity;
 
@@ -27,8 +27,8 @@ begin
     
     main: process(clk)
         -- working vars (synthesiser will optimise)
-        variable v_yn_mult  : signed(2*sinusoid_word_length +1 -1 downto 0)     := (others => '0');
-        variable v_yn_sub   : signed(sinusoid_word_length +2 -1 downto 0)       := (others => '0');
+        variable v_yn_mult  : signed(2*signed_fxp_sinusoid'length +1 -1 downto 0)     := (others => '0');
+        variable v_yn_sub   : signed(signed_fxp_sinusoid'length +2 -1 downto 0)       := (others => '0');
             -- create so '-' operations are not needlessly generated for extra mult bits
         -- output
         variable v_yn       : signed(yn'range)                                  := (others => '0');
@@ -40,7 +40,7 @@ begin
             else
                 v_yn_mult := resize(shift_left(cos_w, 1) * yn1, v_yn_mult'length);
 
-                v_yn_sub := v_yn_mult(v_yn_sub'length-1 + sinusoid_word_length-1 downto sinusoid_word_length-1)
+                v_yn_sub := v_yn_mult(v_yn_sub'length-1 + signed_fxp_sinusoid'length-1 downto signed_fxp_sinusoid'length-1)
                             - resize(yn2, v_yn_sub'length);
                 v_yn := v_yn_sub(v_yn'range);
             end if;

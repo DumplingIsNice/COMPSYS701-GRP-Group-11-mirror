@@ -4,12 +4,10 @@ use ieee.std_logic_1164.all;
 use ieee.math_real.all;
 use STD.textio.all;
 
+library work;
+use work.DFTTypes.all;
+
 entity DFTChannelLinkModules_TestBench is
-    generic (
-        input_width         : natural   := 512; -- elements
-        input_word_length   : natural   := 16;  -- bits
-        sinusoid_word_length: natural   := 16   -- bits
-    );
     port (
         placeholder         : out std_logic
     );
@@ -22,52 +20,44 @@ architecture test of DFTChannelLinkModules_TestBench is
     signal      rst         : std_logic := '0';
 
     -- wiring
-    signal yn                   : signed(sinusoid_word_length-1 downto 0);
+    signal yn                   : signed_fxp_sinusoid;
 
     -- test signals
-    signal  t_x                  : signed(input_word_length-1 downto 0); -- input element
-    signal  t_cos_w_in           : signed(sinusoid_word_length-1 downto 0);
-    signal  t_yn1_in             : signed(sinusoid_word_length-1 downto 0); -- 16, sine precision
-    signal  t_yn2_in             : signed(sinusoid_word_length-1 downto 0);
-    signal  t_prev_sum_in        : signed(input_word_length + natural(ceil(log2(real(input_width)))) -1 downto 0);
+    signal  t_x                  : signal_word; -- input element
+    signal  t_cos_w_in           : signed_fxp_sinusoid;
+    signal  t_yn1_in             : signed_fxp_sinusoid; -- 16, sine precision
+    signal  t_yn2_in             : signed_fxp_sinusoid;
+    signal  t_prev_sum_in        : signed_correlation_sum;
 
-    signal c_sum_out             : signed(input_word_length + natural(ceil(log2(real(input_width)))) -1 downto 0);
+    signal c_sum_out             : signed_correlation_sum;
 
     component DFTGenerateReference is
-        generic (
-            sinusoid_word_length        : natural   := 16   -- bits
-        );
         port (
             clk		        : in std_logic;
             rst             : in std_logic;
     
             -- inputs from previous link
-            cos_w           : in signed(sinusoid_word_length-1 downto 0);
-            yn1             : in signed(sinusoid_word_length-1 downto 0);
-            yn2             : in signed(sinusoid_word_length-1 downto 0);
+            cos_w           : in signed_fxp_sinusoid;
+            yn1             : in signed_fxp_sinusoid;
+            yn2             : in signed_fxp_sinusoid;
             -- outputs
-            cos_w_out       : out signed(sinusoid_word_length-1 downto 0);
-            yn1_out         : out signed(sinusoid_word_length-1 downto 0);
-            yn              : out signed(sinusoid_word_length-1 downto 0)
+            cos_w_out       : out signed_fxp_sinusoid;
+            yn1_out         : out signed_fxp_sinusoid;
+            yn              : out signed_fxp_sinusoid
         );
     end component DFTGenerateReference;
 
     component DFTSumCorrelation is
-        generic (
-            input_width                 : natural   := 512; -- elements
-            input_word_length           : natural   := 16;  -- bits
-            sinusoid_word_length        : natural   := 16   -- bits
-        );
         port (
             clk		        : in std_logic;
             rst             : in std_logic;
 
             -- inputs
-            x               : in signed(input_word_length-1 downto 0);
-            yn              : in signed(sinusoid_word_length-1 downto 0);
-            c_sum_in        : in signed(input_word_length + natural(ceil(log2(real(input_width))))-1 downto 0);
+            x               : in signal_word;
+            yn              : in signed_fxp_sinusoid;
+            c_sum_in        : in signed_correlation_sum;
             -- outputs
-            c_sum_out       : out signed(input_word_length + natural(ceil(log2(real(input_width))))-1 downto 0)
+            c_sum_out       : out signed_correlation_sum
         );
     end component DFTSumCorrelation;
 
@@ -95,9 +85,6 @@ architecture test of DFTChannelLinkModules_TestBench is
 
 begin
     RefStage : DFTGenerateReference
-        generic map (
-            sinusoid_word_length => sinusoid_word_length
-        )
         port map (
             clk	=> clk,
             rst => rst,
@@ -112,11 +99,6 @@ begin
         );
 
     SumStage : DFTSumCorrelation
-        generic map (
-            input_width => input_width,
-            input_word_length => input_word_length,
-            sinusoid_word_length => sinusoid_word_length
-        )
         port map (
             clk	=> clk,
             rst => rst,
@@ -217,13 +199,13 @@ begin
 
         
         
-        t_yn1_in <= to_signed(32767, sinusoid_word_length);
-        t_yn2_in <= to_signed(31785, sinusoid_word_length);
-        t_cos_w_in <= to_signed(31785, sinusoid_word_length);
+        t_yn1_in <= to_signed(32767, signed_fxp_sinusoid'length);
+        t_yn2_in <= to_signed(31785, signed_fxp_sinusoid'length);
+        t_cos_w_in <= to_signed(31785, signed_fxp_sinusoid'length);
 
         wait for CLK_PERIOD;
         assert (yn = 31785) report "yn incorrect" severity warning;
-        t_x <= to_signed(20100, input_word_length);
+        t_x <= to_signed(20100, signal_word'length);
         t_prev_sum_in <= (others => '0');
         
         wait for CLK_PERIOD;
@@ -243,14 +225,14 @@ begin
         -- c[k] = c[k] + -22883 = 14722717 after two clk
         wait for CLK_PERIOD; -- flush pipeline
 
-        t_yn1_in <= to_signed(0, sinusoid_word_length);
-        t_yn2_in <= to_signed(-22883, sinusoid_word_length);
-        t_cos_w_in <= to_signed(-23452, sinusoid_word_length);
+        t_yn1_in <= to_signed(0, signed_fxp_sinusoid'length);
+        t_yn2_in <= to_signed(-22883, signed_fxp_sinusoid'length);
+        t_cos_w_in <= to_signed(-23452, signed_fxp_sinusoid'length);
 
         wait for CLK_PERIOD;
         assert (yn = 22884) report "yn incorrect" severity warning;
         
-        t_x <= to_signed(-32767, input_word_length);
+        t_x <= to_signed(-32767, signal_word'length);
         t_prev_sum_in <= to_signed(14745600, t_prev_sum_in'length);
         
         wait for CLK_PERIOD;
