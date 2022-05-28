@@ -19,6 +19,7 @@ architecture test of DFTChannelLinkModules_TestBench is
 
     constant    CLK_PERIOD  : time      := 10 ns;
     signal      clk         : std_logic := '0';
+    signal      rst         : std_logic := '0';
 
     -- wiring
     signal yn                   : signed(sinusoid_word_length-1 downto 0);
@@ -38,6 +39,7 @@ architecture test of DFTChannelLinkModules_TestBench is
         );
         port (
             clk		        : in std_logic;
+            rst             : in std_logic;
     
             -- inputs from previous link
             cos_w           : in signed(sinusoid_word_length-1 downto 0);
@@ -57,6 +59,8 @@ architecture test of DFTChannelLinkModules_TestBench is
         );
         port (
             clk		        : in std_logic;
+            rst             : in std_logic;
+
             -- inputs
             x               : in signed(input_word_length-1 downto 0);
             yn              : in signed(sinusoid_word_length-1 downto 0);
@@ -73,6 +77,7 @@ begin
         )
         port map (
             clk	=> clk,
+            rst => rst,
             -- inputs from previous link
             cos_w => t_cos_w_in,
             yn1 => t_yn1_in,
@@ -90,6 +95,7 @@ begin
         )
         port map (
             clk	=> clk,
+            rst => rst,
             -- inputs
             x => t_x,
             yn => yn,
