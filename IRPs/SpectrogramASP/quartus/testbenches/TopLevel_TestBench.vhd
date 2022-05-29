@@ -22,28 +22,36 @@ architecture test of TopLevel_TestBench is
         );
     end component DFT_Testbench;
 
-    component DFTChannelLinkModules_TestBench is
+    component DFT_UnitTestBench is
         port (
             placeholder         : out std_logic
         );
-    end component DFTChannelLinkModules_TestBench;
+    end component;
 
-    signal      placeholder1    : std_logic;
-    signal      placeholder2    : std_logic;
+    -- component DFTChannelLinkModules_TestBench is
+    --     port (
+    --         placeholder         : out std_logic
+    --     );
+    -- end component DFTChannelLinkModules_TestBench;
     
 begin
 
     DFTTest: DFT_Testbench
         port map (
-            placeholder => placeholder1
+            placeholder => open
         );
 
-    ModuleTest : DFTChannelLinkModules_TestBench
-        port map (            
-            placeholder => placeholder2
-        );    
+    DFTUnitTest: DFT_UnitTestBench
+        port map (
+            placeholder => open
+        );
+
+    -- ModuleTest : DFTChannelLinkModules_TestBench
+    --     port map (            
+    --         placeholder => open
+    --     );    
 
 
-    placeholder <= placeholder1 or placeholder2;
+    placeholder <= '1';
 
 end architecture test;

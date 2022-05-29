@@ -56,14 +56,14 @@ architecture rtl of DFTDataPathUnit is
 	signal yn_out          : signed_fxp_sinusoid        := (others => '0');
 
     -- input to DFTGenerateReference (from self, or LUT)
-	signal yn1_src         : signed_fxp_sinusoid        := yn1_LUT;
-	signal yn2_src         : signed_fxp_sinusoid        := yn2_LUT;
+	signal yn1_src         : signed_fxp_sinusoid;
+	signal yn2_src         : signed_fxp_sinusoid;
 
     -- output from DFTSumCorrelation
 	signal c_sum_out       : signed_correlation_sum     := (others => '0');
 
     -- input to DFTSumCorrelation (from self, or reset to 0)
-	signal c_sum_src       : signed_correlation_sum     := (others => '0');
+	signal c_sum_src       : signed_correlation_sum;
 
 begin
 
