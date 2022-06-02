@@ -11,6 +11,8 @@ entity DFTDataPathUnit is
         clk             : in std_logic;
         rst             : in std_logic;
 
+		-- control
+		restart			: in std_logic; -- reinitialise from LUT
         -- inputs
         cos_w_LUT       : in signed_fxp_sinusoid;
         yn1_LUT         : in signed_fxp_sinusoid;
@@ -72,9 +74,9 @@ begin
 
     c_sum <= c_sum_out;
 
-	yn1_src <= yn1_LUT when rst = '1' else yn_out;
-	yn2_src <= yn2_LUT when rst = '1' else yn1_out;
-	c_sum_src <= (others => '0') when rst = '1' else c_sum_out;
+	yn1_src <= yn1_LUT when (rst = '1' or restart = '1') else yn_out;
+	yn2_src <= yn2_LUT when (rst = '1' or restart = '1') else yn1_out;
+	c_sum_src <= (others => '0') when (rst = '1' or restart = '1') else c_sum_out;
 
 	GenerateReference: DFTGenerateReference
         port map (

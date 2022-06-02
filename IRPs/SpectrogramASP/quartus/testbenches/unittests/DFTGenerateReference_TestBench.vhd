@@ -136,7 +136,7 @@ begin
 
         
         -- Doesn't test approximations using own outputs due to growing error making it hard to correctly assert
-        for k_idx in 0 to WINDOW_WIDTH/2 -1 loop
+        for k_idx in 0 to K_LENGTH-1 loop
             for n_idx in 0 to WINDOW_WIDTH-1 loop
 
                 -- wait until rising_edge(clk):

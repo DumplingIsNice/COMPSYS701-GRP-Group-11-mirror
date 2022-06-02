@@ -6,7 +6,6 @@ use ieee.math_real.all;
 library work;
 use work.DFTTypes.all;
 use work.DFTSinusoidLUT.all;
--- use work.TdmaMinTypes.all;
 
 entity DFTDataPath is
     port (
@@ -23,10 +22,6 @@ entity DFTDataPath is
         x					: in signal_word;
         -- outputs
         magnitudes			: out magnitudes_array
-
-        -- NoC
-        -- noc_send			: out tdma_min_port;
-        -- noc_recv			: in tdma_min_port
     );
 end entity DFTDataPath;
 
@@ -41,7 +36,8 @@ architecture rtl of DFTDataPath is
         port (
             clk             : in std_logic;
             rst             : in std_logic;
-            
+            -- control
+            restart			: in std_logic;
             -- inputs
             cos_w_LUT       : in signed_fxp_sinusoid;
             yn1_LUT         : in signed_fxp_sinusoid;
@@ -69,12 +65,10 @@ architecture rtl of DFTDataPath is
     end component DFTMagnitude;
 
     signal  sinusoid_clk    : std_logic;
-    signal  sinusoid_rst    : std_logic;
 
 begin
 
     sinusoid_clk <= clk and enable;
-    sinusoid_rst <= rst or rst_sinusoid;
 
     main: process(clk)
     begin
@@ -109,8 +103,9 @@ begin
         ReCosUnit: entity work.DFTDataPathUnit
             port map (
                 clk => sinusoid_clk,
-                rst => sinusoid_rst,
-                
+                rst => rst,
+                -- control
+                restart => rst_sinusoid,
                 -- inputs
                 cos_w_LUT => K_SINUSOID_LUT(2*k),
                 yn1_LUT => to_signed(2**15 -1, signed_fxp_sinusoid'length),
@@ -123,8 +118,9 @@ begin
         ImSinUnit: entity work.DFTDataPathUnit
             port map (
                 clk => sinusoid_clk,
-                rst => sinusoid_rst,
-                
+                rst => rst,
+                -- control
+                restart => rst_sinusoid,
                 -- inputs
                 cos_w_LUT => K_SINUSOID_LUT(2*k),
                 yn1_LUT => to_signed(0, signed_fxp_sinusoid'length),
