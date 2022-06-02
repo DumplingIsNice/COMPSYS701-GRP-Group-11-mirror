@@ -8,7 +8,8 @@ from plotly.subplots import make_subplots
 import util.approximate_sinusoid_int as u_asi
 import util.spectrogram
 
-PLOT_DFT = False
+PLOT_DFT = True
+os.makedirs("/generated/", exist_ok=True)
 
 """Parameters"""
 samples: int = 512
@@ -47,7 +48,11 @@ msg = [
     "",
     f"cos(wk)= {cos_w}",
     f"-sin(wk)= {sin_nw}",
+    "",
+    "Test Signal Components:",
 ]
+for (f, m) in test_signal_components:
+    msg.append(f"{f} hz with amplitude {m}")
 with open(os.getcwd() + "/generated/parameters.txt", "w") as f:
     f.writelines("\n".join(msg))
 
