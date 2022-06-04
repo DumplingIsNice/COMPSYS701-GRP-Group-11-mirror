@@ -33,9 +33,8 @@ begin
                 v_c_sum := (others => '0');
             else
                 v_mult := x * yn;
-                v_c_sum := v_mult(x'length-1 + signed_fxp_sinusoid'length-1 downto signed_fxp_sinusoid'length-1)
-                            + c_sum_in;
-                v_c_sum := c_sum_in + v_c_sum(x'range);
+                v_c_sum := resize(shift_right(v_mult, signed_fxp_sinusoid'length-1), v_c_sum'length);
+                v_c_sum := v_c_sum + c_sum_in;
             end if;
 
             c_sum_out <= v_c_sum;

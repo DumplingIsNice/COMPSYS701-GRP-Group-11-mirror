@@ -22,6 +22,12 @@ architecture test of DFT_UnitTestBench is
             placeholder     : out std_logic
         );
     end component DFTGenerateReference_TestBench;
+
+    component DFTSumCorrelation_TestBench is
+        port (
+            placeholder     : out std_logic
+        );
+    end component DFTSumCorrelation_TestBench;
 begin
 
     placeholder <= '1';
@@ -32,6 +38,11 @@ begin
         );
 
     GenerateReferenceTestBench: DFTGenerateReference_TestBench
+        port map (
+            placeholder => open
+        );
+
+    SumCorrelationTestBench: DFTSumCorrelation_TestBench
         port map (
             placeholder => open
         );

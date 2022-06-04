@@ -107,9 +107,9 @@ begin
                 -- control
                 restart => rst_sinusoid,
                 -- inputs
-                cos_w_LUT => K_SINUSOID_LUT(2*k),
+                cos_w_LUT => K_SINUSOID_LUT(K_SINUSOID_LUT'length-1 - 2*k),
                 yn1_LUT => to_signed(2**15 -1, signed_fxp_sinusoid'length),
-                yn2_LUT => K_SINUSOID_LUT(2*k),
+                yn2_LUT => K_SINUSOID_LUT(K_SINUSOID_LUT'length-1 - 2*k),
                 x => x,
                 -- outputs
                 c_sum => c_sum_re
@@ -122,9 +122,9 @@ begin
                 -- control
                 restart => rst_sinusoid,
                 -- inputs
-                cos_w_LUT => K_SINUSOID_LUT(2*k),
+                cos_w_LUT => K_SINUSOID_LUT(K_SINUSOID_LUT'length-1 - 2*k),
                 yn1_LUT => to_signed(0, signed_fxp_sinusoid'length),
-                yn2_LUT => K_SINUSOID_LUT(2*k+1),
+                yn2_LUT => K_SINUSOID_LUT(K_SINUSOID_LUT'length-1 - (2*k)-1),
                 x => x,
                 -- outputs
                 c_sum => c_sum_im

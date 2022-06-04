@@ -66,6 +66,7 @@ architecture rtl of DFTDataPathUnit is
 
     -- input to DFTSumCorrelation (from self, or reset to 0)
 	signal c_sum_src       : signed_correlation_sum;
+	signal prev_x			: signal_word				:= (others => '0');
 
 begin
 
@@ -97,7 +98,7 @@ begin
             clk	=> clk,
             rst => rst,
             -- inputs
-            x => x,
+            x => prev_x, -- delay 1 cycle
             yn => yn_out,
             c_sum_in => c_sum_src,
             -- outputs
@@ -105,5 +106,18 @@ begin
         );
 	
 
+	PIPELINE_X: process(clk)
+		variable v_prev_x	: signal_word := (others => '0');
+	begin
+		if rising_edge(clk) then
+			prev_x <= v_prev_x; -- emit before updating, to force the signal 1 cycle behind variable
+			
+			if rst = '1' or restart = '1' then
+				v_prev_x := (others => '0'); -- clear pipeline
+			else
+				v_prev_x := x;
+			end if;
+		end if;
+	end process PIPELINE_X;
 	
 end architecture rtl;
