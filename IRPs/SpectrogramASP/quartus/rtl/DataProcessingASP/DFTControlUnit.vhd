@@ -20,7 +20,6 @@ entity DFTControlUnit is
 		enable				: out std_logic	:= '0'; -- value of x must change each clk cycle - disable to stall operation
         rst_sinusoid		: out std_logic	:= '0'; -- reset sinusoid approximation and contents, but keep c_sum in pipeline
 		update_output       : out std_logic	:= '0'; -- update magnitudes register
-		output_updated		: out std_logic := '0';	-- notify that magnitudes register has been updated
 	
 		-- NoC
 		noc_send			: out tdma_min_port;
@@ -42,6 +41,9 @@ begin
 	rst_sinusoid <= new_window;
 	enable <= x_ready;
 
+	-- enable <= x_ready or ...; -- data received from tdma min
+	-- rst_sinusoid <= new_window or ...; -- auto run starts new window  
+
 	main: process(clk)
 		constant PIPELINE_DELAY : natural	:= 3; -- clock cycles
 
@@ -62,6 +64,11 @@ begin
 				x_index := (others => '0');
 				update_output <= '0';
 			else
+
+				-- case packet is
+				-- 	when enable =>
+				-- 		v_enable := '1';
+				-- end case;
 				-- NOC: WIP - unstable metavalues
 				-- if noc_recv.data(31) = '1' then
 				-- 	case noc_recv.data(27 downto 24) is

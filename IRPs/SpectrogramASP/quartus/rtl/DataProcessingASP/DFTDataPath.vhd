@@ -15,13 +15,13 @@ entity DFTDataPath is
         -- control
         enable				: in std_logic; -- value of x must change each clk cycle - disable to stall operation
         rst_sinusoid		: in std_logic; -- reset sinusoid approximation and contents, but keep c_sum in pipeline
-            -- redundant w/ combinatorial synthesis?
         update_output       : in std_logic; -- update magnitudes register
 
         -- inputs
         x					: in signal_word;
         -- outputs
-        magnitudes			: out magnitudes_array
+        magnitudes			: out magnitudes_array;
+        output_updated      : out std_logic -- pulses a tick after update_output is received
     );
 end entity DFTDataPath;
 
@@ -93,6 +93,20 @@ begin
                 end if;
         end if;
     end process UPDATE_MAGNITUDES;
+
+    UPDATED_SIGNAL: process(clk)
+        variable prev_update_output : std_logic := '0';
+    begin
+        if rising_edge(clk) then
+            if rst = '1' then
+                prev_update_output := '0';
+                output_updated <= '0';
+            else
+                output_updated <= prev_update_output;
+                prev_update_output := update_output;
+            end if;
+        end if;
+    end process UPDATED_SIGNAL;
 
     GEN_UNITS: for k in 0 to K_LENGTH-1 generate
         signal c_sum_re         : signed_correlation_sum := (others => '0');

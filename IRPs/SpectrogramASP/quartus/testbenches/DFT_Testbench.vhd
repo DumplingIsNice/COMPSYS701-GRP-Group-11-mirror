@@ -28,7 +28,6 @@ architecture test of DFT_Testbench is
             enable				: out std_logic; -- value of x must change each clk cycle - disable to stall operation
             rst_sinusoid		: out std_logic; -- reset sinusoid approximation and contents, but keep c_sum in pipeline
             update_output       : out std_logic; -- update magnitudes register
-            output_updated		: out std_logic;
             -- noc
             noc_send			: out tdma_min_port;
             noc_recv			: in tdma_min_port
@@ -49,7 +48,8 @@ architecture test of DFT_Testbench is
             -- inputs
             x					: in signal_word;
             -- outputs
-            magnitudes			: out magnitudes_array
+            magnitudes			: out magnitudes_array;
+            output_updated      : out std_logic
 		);
 	end component DFTDataPath;
 
@@ -85,7 +85,6 @@ begin
             enable => enable,
             rst_sinusoid => rst_sinusoid,
             update_output => update_output,
-            output_updated => output_updated,
             -- noc
             noc_send => open,
             noc_recv => (others => (others => '0'))
@@ -103,7 +102,8 @@ begin
             -- inputs
             x => x,
             -- outputs
-            magnitudes => magnitudes
+            magnitudes => magnitudes,
+            output_updated => output_updated
 		);
     
     test: process
