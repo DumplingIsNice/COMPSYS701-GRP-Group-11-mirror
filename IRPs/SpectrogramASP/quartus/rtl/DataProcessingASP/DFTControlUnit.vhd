@@ -13,8 +13,8 @@ entity DFTControlUnit is
 		rst					: in std_logic;
 
 		-- inputs
-		x_direct_ready		: in std_logic;			-- 
-		x_direct			: in signal_word;		-- bus meant for direct connect to the datapath (not streamed via NoC)
+		x_direct_ready		: in std_logic	 := '0';			-- 
+		x_direct			: in signal_word := (others => '0');		-- bus meant for direct connect to the datapath (not streamed via NoC)
 		new_window  		: in std_logic;
 
 		-- outputs
