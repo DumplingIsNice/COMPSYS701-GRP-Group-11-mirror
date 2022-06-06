@@ -43,12 +43,14 @@ begin
 	enable <= x_ready;
 
 	main: process(clk)
+		constant PIPELINE_DELAY : natural	:= 3; -- clock cycles
+
 		variable v_enable : std_logic := '1';
 		variable v_rst_sinusoid : std_logic := '0';
 		variable is_auto		: std_logic	:= '1';
 		variable window_done	: std_logic := '0';
 		
-		variable x_index	: unsigned(natural(ceil(log2(real(WINDOW_WIDTH)))) downto 0)	:= (others => '0');
+		variable x_index		: unsigned(natural(ceil(log2(real(WINDOW_WIDTH + PIPELINE_DELAY)))) downto 0)	:= (others => '0');
 	begin
 		if rising_edge(clk) then
 			if rst = '1' then
@@ -89,17 +91,21 @@ begin
 				-- end if;
 
 				-- x counter
-				x_index := x_index + 1;
+				if new_window = '1' then
+					x_index := (others => '0');
+				else
+					x_index := x_index + 1;
 
-				if window_done = '0' then
-					if (x_index >= WINDOW_WIDTH) then
-						x_index := (others => '0');
-						update_output <= '1';
-						if is_auto = '0' then
-							window_done := '1';
+					if window_done = '0' then
+						if (x_index >= to_unsigned(WINDOW_WIDTH + PIPELINE_DELAY, x_index'length)) then
+							x_index := to_unsigned(PIPELINE_DELAY, x_index'length);
+							update_output <= '1';
+							if is_auto = '0' then
+								window_done := '1';
+							end if;
+						else
+							update_output <= '0';
 						end if;
-					else
-						update_output <= '0';
 					end if;
 				end if;
 			end if;

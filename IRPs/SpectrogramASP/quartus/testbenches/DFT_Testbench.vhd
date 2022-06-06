@@ -141,9 +141,10 @@ begin
             wait until rising_edge(clk);
         end loop;
 
-        x_ready <= '0'; -- disable processing
+        -- x_ready <= '0'; -- disable processing
 
         wait for 3 * CLK_PERIOD; -- pipeline delay is 3 full cycles
+        wait for CLK_PERIOD + CLK_PERIOD/10;  -- wait for output to update (cycle + delta)
 
         file_open(file_log, "test_log.txt", write_mode);
         for k_idx in 0 to K_LENGTH-1 loop
