@@ -38,7 +38,7 @@
 
 set_global_assignment -name FAMILY "Cyclone V"
 set_global_assignment -name DEVICE 5CSEMA5F31C6
-set_global_assignment -name TOP_LEVEL_ENTITY TopLevel_TestBench
+set_global_assignment -name TOP_LEVEL_ENTITY TopLevel
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 18.1.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "12:52:19  MAY 17, 2022"
 set_global_assignment -name LAST_QUARTUS_VERSION "18.1.0 Lite Edition"
@@ -54,16 +54,38 @@ set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
-set_global_assignment -name VHDL_FILE rtl/testbenches/TopLevel_TestBench.vhd
-set_global_assignment -name VHDL_FILE rtl/testbenches/DFTChannelLinkModules_TestBench.vhd
-set_global_assignment -name VHDL_FILE rtl/testbenches/DFTChannelLink_TestBench.vhd
+set_global_assignment -name VHDL_FILE ip/AudioFifo/AudioFifo.vhd -library ip
+set_global_assignment -name QIP_FILE ip/AudioFifo/AudioFifo.qip -library ip
+set_global_assignment -name VHDL_FILE ip/AudioClock_2/AudioClock.vhd -library ip
+set_global_assignment -name QIP_FILE ip/AudioClock_2/AudioClock.qip -library ip
+set_global_assignment -name VHDL_FILE ip/AudioRom/AudioRom.vhd -library ip
+set_global_assignment -name QIP_FILE ip/AudioRom/AudioRom.qip -library ip
+set_global_assignment -name VHDL_FILE ip/TdmaMinFifo/TdmaMinFifo.vhd -library ip
+set_global_assignment -name QIP_FILE ip/TdmaMinFifo/TdmaMinFifo.qip -library ip
+set_global_assignment -name VHDL_FILE rtl/AspDac.vhd
+set_global_assignment -name VHDL_FILE rtl/AspAdc.vhd
+set_global_assignment -name VHDL_FILE rtl/TopLevel.vhd
+set_global_assignment -name VHDL_FILE rtl/TdmaMin/TdmaMinTypes.vhd
+set_global_assignment -name VHDL_FILE rtl/TdmaMin/TdmaMinSwitch.vhd
+set_global_assignment -name VHDL_FILE rtl/TdmaMin/TdmaMinStage.vhd
+set_global_assignment -name VHDL_FILE rtl/TdmaMin/TdmaMinSlots.vhd
+set_global_assignment -name VHDL_FILE rtl/TdmaMin/TdmaMinInterface.vhd
+set_global_assignment -name VHDL_FILE rtl/TdmaMin/TdmaMinFabric.vhd
+set_global_assignment -name VHDL_FILE rtl/TdmaMin/TdmaMin.vhd
+set_global_assignment -name VHDL_FILE rtl/DataProcessingASP/DFTTypes.vhd
 set_global_assignment -name VHDL_FILE rtl/DataProcessingASP/DFTSumCorrelation.vhd
+set_global_assignment -name VHDL_FILE rtl/DataProcessingASP/DFTSinusoidLUT.vhd
+set_global_assignment -name VHDL_FILE rtl/DataProcessingASP/DFTMagnitude.vhd
 set_global_assignment -name VHDL_FILE rtl/DataProcessingASP/DFTGenerateReference.vhd
+set_global_assignment -name VHDL_FILE rtl/DataProcessingASP/DFTDataPathUnit.vhd
+set_global_assignment -name VHDL_FILE rtl/DataProcessingASP/DFTDataPath.vhd
+set_global_assignment -name VHDL_FILE rtl/DataProcessingASP/DFTControlUnit.vhd
+set_global_assignment -name VHDL_FILE rtl/DataProcessingASP/DataProcessingASP.vhd
 set_global_assignment -name VHDL_FILE system/synthesis/system.vhd -library system
 set_global_assignment -name QIP_FILE system/synthesis/system.qip
-set_global_assignment -name VHDL_FILE testbenches/DFTChannelLink_TestBench.vhd
-set_global_assignment -name VHDL_FILE rtl/TdmaMin/TdmaMinTypes.vhd
-set_global_assignment -name VHDL_FILE rtl/DataProcessingASP/DFTChannelLink.vhd
-set_global_assignment -name VHDL_FILE rtl/DataProcessingASP/DFTChannel.vhd
-set_global_assignment -name VHDL_FILE rtl/DataProcessingASP/DataProcessingASP.vhd
+set_global_assignment -name VHDL_FILE rtl/Audio/AudioTones.vhd
+set_global_assignment -name VHDL_FILE rtl/Audio/AudioOut.vhd
+set_global_assignment -name VHDL_FILE rtl/Audio/AudioIn.vhd
+set_global_assignment -name VHDL_FILE rtl/Audio/AudioControl.vhd
+set_global_assignment -name VHDL_FILE rtl/Audio/Audio.vhd
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
