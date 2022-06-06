@@ -65,6 +65,8 @@ architecture test of DFT_Testbench is
     signal update_output    : std_logic := '0';
     signal output_updated	: std_logic := '0';
 
+    signal noc_recv         : tdma_min_port;
+
     signal x                : signal_word;
 
     signal magnitudes       : magnitudes_array;
@@ -87,7 +89,7 @@ begin
             update_output => update_output,
             -- noc
             noc_send => open,
-            noc_recv => (others => (others => '0'))
+            noc_recv => noc_recv
         );
 
     DataPath: DFTDataPath
@@ -117,11 +119,17 @@ begin
         file        file_log            : text;
         variable    log_line            : line;
     begin
-        wait for 4*CLK_PERIOD; 
+        wait for 4*CLK_PERIOD; -- let initiatialistions propagate through pipeline
     
-        x_ready <= '1';
+        -- x_ready <= '1'; -- in practice this should be used to enable for point-to-point data in, not NOC
+        -- enable via NoC to validate NoC support
+        noc_recv.data(31) <= '1';
+        noc_recv.data(27 downto 24) <= x"2"; -- NOC_SET_ENABLE
+        
+        -- input feed test (arbitrary value)
         x <= to_signed(14000, signal_word'length);
         wait for CLK_PERIOD;
+        noc_recv.data <= (others => '0');
 
 
         -- Test with generated data
