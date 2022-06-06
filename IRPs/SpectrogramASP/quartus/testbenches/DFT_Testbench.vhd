@@ -22,12 +22,15 @@ architecture test of DFT_Testbench is
             rst					: in std_logic;
     
             -- inputs
-            x_ready				: in std_logic;
+            x_direct_ready		: in std_logic;
+            x_direct			: in signal_word;
             new_window  		: in std_logic;
             -- outputs
             enable				: out std_logic; -- value of x must change each clk cycle - disable to stall operation
             rst_sinusoid		: out std_logic; -- reset sinusoid approximation and contents, but keep c_sum in pipeline
             update_output       : out std_logic; -- update magnitudes register
+
+            x                   : out signal_word;
             -- noc
             noc_send			: out tdma_min_port;
             noc_recv			: in tdma_min_port
@@ -57,7 +60,8 @@ architecture test of DFT_Testbench is
     signal      clk         : std_logic := '0';
     signal      rst         : std_logic := '0';
 
-    signal x_ready          : std_logic := '0';
+    signal x_direct_ready   : std_logic := '0';
+    signal x_direct         : signal_word := (others => '0');
     signal new_window       : std_logic := '0';
 
     signal enable           : std_logic := '0';
@@ -81,12 +85,15 @@ begin
             clk	=> clk,
             rst	=> rst,
             -- inputs
-            x_ready	=> x_ready,
+            x_direct_ready	=> x_direct_ready,
+            x_direct => x_direct,
             new_window => new_window,
             -- outputs
             enable => enable,
             rst_sinusoid => rst_sinusoid,
             update_output => update_output,
+
+            x => x,
             -- noc
             noc_send => open,
             noc_recv => noc_recv
@@ -121,38 +128,60 @@ begin
     begin
         wait for 4*CLK_PERIOD; -- let initiatialistions propagate through pipeline
     
-        -- x_ready <= '1'; -- in practice this should be used to enable for point-to-point data in, not NOC
+
+        -- set input mode as direct via NoC
+        noc_recv.data(31) <= '1';
+        noc_recv.data(27 downto 24) <= x"6"; -- NOC_SET_INPUT_MODE
+        noc_recv.data(15 downto 0) <= x"0002"; -- NOC_INPUT_MODE_DIRECT
+        wait for CLK_PERIOD;
+        noc_recv.data <= (others => '0');
+
+        -- set run mode as auto via NoC
+        noc_recv.data(31) <= '1';
+        noc_recv.data(27 downto 24) <= x"5"; -- NOC_SET_RUN_MODE
+        noc_recv.data(15 downto 0) <= x"0001"; -- NOC_RUN_MODE_AUTO
+        wait for CLK_PERIOD;
+        noc_recv.data <= (others => '0');
+
+
         -- enable via NoC to validate NoC support
         noc_recv.data(31) <= '1';
         noc_recv.data(27 downto 24) <= x"2"; -- NOC_SET_ENABLE
+
+        -- signal that direct input is ready
+        x_direct_ready <= '1';
         
         -- input feed test (arbitrary value)
-        x <= to_signed(14000, signal_word'length);
+        x_direct <= to_signed(14000, signal_word'length);
         wait for CLK_PERIOD;
         noc_recv.data <= (others => '0');
 
 
         -- Test with generated data
         new_window <= '1';
-        wait for CLK_PERIOD;
+        wait until rising_edge(clk);
+        wait for CLK_PERIOD/2;
         new_window <= '0';
 
         file_open(file_test_signal, "int16_signal.txt", read_mode);
 
         for x_idx in 0 to WINDOW_WIDTH-1 loop
+            wait for CLK_PERIOD/5;
+
             readline(file_test_signal, test_signal_line);
             read(test_signal_line, test_signal_int);
             
             test_signal_sample := to_signed(test_signal_int, signal_word'length);
-            x <= test_signal_sample;
+            x_direct <= test_signal_sample;
 
             wait until rising_edge(clk);
         end loop;
-
-        -- x_ready <= '0'; -- disable processing
-
+        
+        wait until falling_edge(clk);
         wait for 3 * CLK_PERIOD; -- pipeline delay is 3 full cycles
         wait for CLK_PERIOD + CLK_PERIOD/10;  -- wait for output to update (cycle + delta)
+
+        x_direct_ready <= '0'; -- disable processing
 
         file_open(file_log, "test_log.txt", write_mode);
         for k_idx in 0 to K_LENGTH-1 loop

@@ -68,6 +68,9 @@ architecture rtl of DFTDataPathUnit is
 	signal c_sum_src       : signed_correlation_sum;
 	signal prev_x			: signal_word				:= (others => '0');
 
+	-- pipeline resets
+	signal prev_rst			: std_logic := '0';
+	signal prev_restart		: std_logic := '0';
 begin
 
     -- WARNING:
@@ -77,7 +80,7 @@ begin
 
 	yn1_src <= yn1_LUT when (rst = '1' or restart = '1') else yn_out;
 	yn2_src <= yn2_LUT when (rst = '1' or restart = '1') else yn1_out;
-	c_sum_src <= (others => '0') when (rst = '1' or restart = '1') else c_sum_out;
+	c_sum_src <= (others => '0') when (prev_rst = '1' or prev_restart = '1') else c_sum_out;
 
 	GenerateReference: DFTGenerateReference
         port map (
@@ -96,7 +99,7 @@ begin
 	SumCorrelation: DFTSumCorrelation
         port map (
             clk	=> clk,
-            rst => rst,
+            rst => prev_rst,
             -- inputs
             x => prev_x, -- delay 1 cycle
             yn => yn_out,
@@ -119,5 +122,18 @@ begin
 			end if;
 		end if;
 	end process PIPELINE_X;
+
+	PIPELINE_RST: process(clk)
+		variable v_prev_rst		: std_logic := '0';
+		variable v_prev_restart : std_logic	:= '0';
+	begin
+		if rising_edge(clk) then
+			prev_rst <= v_prev_rst;
+			v_prev_rst := rst;
+
+			prev_restart <= v_prev_restart;
+			v_prev_restart := restart;
+		end if;
+	end process PIPELINE_RST;
 	
 end architecture rtl;
