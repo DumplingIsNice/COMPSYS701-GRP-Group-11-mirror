@@ -18,7 +18,7 @@ package ReCOPConstants is
     constant GENERAL_ADDR_WIDTH : integer   := 10;
 
     constant PM_ADDR_WIDTH   : integer := GENERAL_ADDR_WIDTH;     -- Program Memory Length (2^x)
-    constant PM_DATA_WIDTH   : integer := 16;
+    constant PM_DATA_WIDTH   : integer := 32;
 
     constant DM_ADDR_WIDTH   : integer := GENERAL_ADDR_WIDTH;
     constant DM_DATA_WIDTH   : integer := 16;

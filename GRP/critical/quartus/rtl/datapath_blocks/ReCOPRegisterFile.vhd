@@ -22,8 +22,8 @@ entity ReCOPRegisterFile is
 		data				: IN STD_LOGIC_VECTOR (DATA_WIDTH-1 DOWNTO 0);
 		wraddress		: IN STD_LOGIC_VECTOR (2 DOWNTO 0);
 		
-		rdaddress_x		: IN STD_LOGIC_VECTOR (2 DOWNTO 0);
-		rdaddress_z		: IN STD_LOGIC_VECTOR (2 DOWNTO 0);
+		rdaddress_x		: IN STD_LOGIC_VECTOR (3 DOWNTO 0);
+		rdaddress_z		: IN STD_LOGIC_VECTOR (3 DOWNTO 0);
 		
 		wren				: IN STD_LOGIC  := '1';
 		rden_x			: IN STD_LOGIC  := '1';
@@ -68,10 +68,10 @@ architecture rtl of ReCOPRegisterFile is
 		inclock				: IN STD_LOGIC ;
 		data				: IN STD_LOGIC_VECTOR (15 DOWNTO 0);
 		rden_a				: IN STD_LOGIC ;
-		rdaddress_a			: IN STD_LOGIC_VECTOR (2 DOWNTO 0);
+		rdaddress_a			: IN STD_LOGIC_VECTOR (3 DOWNTO 0);
 		wraddress			: IN STD_LOGIC_VECTOR (2 DOWNTO 0);
 		rden_b				: IN STD_LOGIC ;
-		rdaddress_b			: IN STD_LOGIC_VECTOR (2 DOWNTO 0)
+		rdaddress_b			: IN STD_LOGIC_VECTOR (3 DOWNTO 0)
 	);
 	END COMPONENT;
 
@@ -105,10 +105,10 @@ begin
 		wren => wren,
 		inclock => clk,
 		data => data,
-		rden_a => rden_a,
+		rden_a => rden_x,
 		rdaddress_a => rdaddress_x,
 		wraddress => wraddress,
-		rden_b => rden_b,
+		rden_b => rden_z,
 		rdaddress_b => rdaddress_z,
 		qa => sub_wire0,
 		qb => sub_wire1

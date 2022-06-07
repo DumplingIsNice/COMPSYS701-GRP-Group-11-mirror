@@ -129,8 +129,8 @@ architecture rtl of ReCOPDataPath is
 			clk				:	 IN STD_LOGIC;
 			data				:	 IN STD_LOGIC_VECTOR(data_width-1 DOWNTO 0);
 			wraddress		:	 IN STD_LOGIC_VECTOR(2 DOWNTO 0);
-			rdaddress_x		:	 IN STD_LOGIC_VECTOR(2 DOWNTO 0);
-			rdaddress_z		:	 IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+			rdaddress_x		:	 IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+			rdaddress_z		:	 IN STD_LOGIC_VECTOR(3 DOWNTO 0);
 			wren				:	 IN STD_LOGIC;
 			rden_x			:	 IN STD_LOGIC;
 			rden_z			:	 IN STD_LOGIC;
@@ -244,7 +244,7 @@ begin
 
             DM_OUT => DM_OUT,
             Ry => Ry,
-            operand => IR_Operand,
+            operand => "0000000000000000" & IR_Operand,
 
             PM_ADR => PM_ADR
         );
@@ -257,7 +257,7 @@ begin
         )
         port map (
             clk => clk,
-            addr => PM_ADR,
+            addr => PM_ADR(PM_ADDR_WIDTH-1 downto 0),
             pm_o => PM_OUT
         );
 
@@ -340,7 +340,7 @@ begin
             Ry => Ry,
             SP_incremented => SP_incremented,
             SP => SP,
-            operand => IR_Operand,
+            operand => "0000000000000000" & IR_Operand,
             -- outputs
             DM_ADR => DM_ADR
         );
@@ -377,14 +377,14 @@ begin
 		(
 			clk		    => clk,
 			addr		=> to_integer(unsigned(DM_ADR)), -- single_port_ram intakes integer addr
-			data		=> DM_IN,
+			data		=> DM_IN(15 downto 0),
 			we			=> we,
-			q			=> DM_OUT
+			q			=> DM_OUT(15 downto 0)
 		);
 
         DM_IN <=    PM_ADR when DM_mux_select = DM_MUX_SEL_PM_ADR else
-                    Rx when DM_mux_select = DM_MUX_SEL_RX else
-                    IR_Operand when DM_mux_select = DM_MUX_SEL_IR_OPERAND else
-                    Rx;
+                    "0000000000000000" & Rx when DM_mux_select = DM_MUX_SEL_RX else
+                    "0000000000000000" & IR_Operand when DM_mux_select = DM_MUX_SEL_IR_OPERAND else
+                    "0000000000000000" & Rx;
     
 end architecture rtl;
