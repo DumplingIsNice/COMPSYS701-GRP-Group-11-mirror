@@ -16,7 +16,6 @@ entity ReCOP_Control_Unit is
         RF_MUX: out std_logic_vector(1 downto 0);
         AR_MUX: out std_logic_vector(1 downto 0);
         IDM_MUX: out std_logic_vector(1 downto 0);
-        ADD_SUM_OP : out std_logic;
         ALU_OP : out std_logic_vector( 1 downto 0);
         mem_write : out std_logic;
         mem_read  : out std_logic;
