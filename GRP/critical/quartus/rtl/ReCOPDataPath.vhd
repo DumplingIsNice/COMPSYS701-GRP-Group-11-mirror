@@ -13,6 +13,9 @@ entity ReCOPDataPath is
         
         -- control
 
+        -- data memory
+        we                  : in std_logic;
+
         -- program counter
         wr_PC               : in std_logic;
         PC_mux_select       : in std_logic_vector(1 downto 0);
@@ -33,7 +36,6 @@ end entity ReCOPDataPath;
 
 
 architecture rtl of ReCOPDataPath is
-    
 
     -- Program Counter --
     component ReCOPProgramCounter is
@@ -57,11 +59,24 @@ architecture rtl of ReCOPDataPath is
     end component ReCOPProgramCounter;
     
     signal PM_ADR          : recop_mem_addr;
-
+    signal DM_IN           : recop_mem_addr;
+    signal DM_OUT          : recop_mem_addr;
+    signal Ry              : recop_reg;
 
     -- Internal Program Memory --
-    -- INSERT HERE
+    component ReCOPProgramMemory is
+            generic(
+                ADDR_WIDTH : natural := 10;
+                WORD_WIDTH : natural := 32
+            );
+            port(
+                clk : in std_logic;
+                addr : in std_logic_vector(ADDR_WIDTH-1 downto 0);
+                pm_o : out std_logic_vector(WORD_WIDTH-1 downto 0)
+            );
+    end component ReCOPProgramMemory;
 
+    signal PM_OUT     : std_logic_vector(PM_DATA_WIDTH-1 downto 0);
 
     -- Instruction Register --
     component ReCOPInstructionRegister is
@@ -150,9 +165,22 @@ architecture rtl of ReCOPDataPath is
 
     signal DM_ADR              : recop_mem_addr;
 
-
     -- Internal Data Memory --
-    -- INSERT HERE
+	component single_port_ram is
+		generic 
+		(
+			DATA_WIDTH : natural := DM_DATA_WIDTH;
+			ADDR_WIDTH : natural := DM_ADDR_WIDTH
+		);
+		port 
+		(
+			clk		: in std_logic;
+			addr		: in natural range 0 to 2**ADDR_WIDTH - 1;
+			data		: in std_logic_vector((DATA_WIDTH-1) downto 0);
+			we			: in std_logic := '1';
+			q			: out std_logic_vector((DATA_WIDTH -1) downto 0)
+		);
+	end component single_port_ram;
 
 begin
 
@@ -175,7 +203,16 @@ begin
         );
 
     -- InternalProgramMemory: ReCOPInternalProgramMemory
-    --     port map ();
+    ProgramMemory: ReCOPProgramMemory
+        generic map (
+            ADDR_WIDTH => PM_ADDR_WIDTH,
+            WORD_WIDTH => PM_DATA_WIDTH
+        )
+        port map (
+            clk => clk,
+            addr => PM_ADR,
+            pm_o => PM_OUT
+        );
 
     InstructionRegister: ReCOPInstructionRegister
         generic map (
@@ -222,7 +259,7 @@ begin
     
     AddressRegister: ReCOPAddressRegister
         generic map (
-            AR_init => AR_init
+            AR_init => AR_INIT
         )
         port map (
             clk => clk,
@@ -239,5 +276,19 @@ begin
             DM_ADR => DM_ADR
         );
 
+        DM: single_port_ram
+		generic map
+		(
+			DATA_WIDTH => DM_DATA_WIDTH,
+			ADDR_WIDTH => DM_ADDR_WIDTH
+		)
+		port map
+		(
+			clk		    => clk,
+			addr		=> to_integer(unsigned(DM_ADR)), -- single_port_ram intakes integer addr
+			data		=> DM_IN,
+			we			=> we,
+			q			=> DM_OUT
+		);
     
 end architecture rtl;
