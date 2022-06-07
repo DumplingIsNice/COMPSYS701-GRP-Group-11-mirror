@@ -40,5 +40,9 @@ package ReCOPConstants is
     
     constant MUX_B_SEL_RZ           : std_logic := '1';
     constant MUX_B_SEL_IR_OPERAND   : std_logic := '0';
+
+    constant DM_MUX_SEL_IR_OPERAND  : std_logic_vector(1 downto 0) := "00";
+    constant DM_MUX_SEL_RX          : std_logic_vector(1 downto 0) := "01";
+    constant DM_MUX_SEL_PM_ADR      : std_logic_vector(1 downto 0) := "10";
     
 end package ReCOPConstants;

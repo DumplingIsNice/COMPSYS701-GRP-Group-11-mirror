@@ -28,6 +28,7 @@ entity ReCOPDataPath is
 
         -- data memory
         we                  : in std_logic;
+        DM_mux_select       : in std_logic_vector(1 downto 0);
 
         -- program counter
         wr_PC               : in std_logic;
@@ -281,7 +282,7 @@ begin
         );
 
     -- RegisterFile: ReCOPRegisterFile
-	RF: ReCOPRegisterFile
+	RegisterFile: ReCOPRegisterFile
 		GENERIC MAP 
 		( 
 			DATA_WIDTH => REG_FILE_DATA_WIDTH
@@ -366,7 +367,7 @@ begin
                         IR_Operand when ALU_mux_B_select = MUX_B_SEL_IR_OPERAND else
                         Rx;
 
-        DM: single_port_ram
+        InternalDataMemory: single_port_ram
 		generic map
 		(
 			DATA_WIDTH => DM_DATA_WIDTH,
@@ -380,5 +381,10 @@ begin
 			we			=> we,
 			q			=> DM_OUT
 		);
+
+        DM_IN <=    PM_ADR when DM_mux_select = DM_MUX_SEL_PM_ADR else
+                    Rx when DM_mux_select = DM_MUX_SEL_RX else
+                    IR_Operand when DM_mux_select = DM_MUX_SEL_IR_OPERAND else
+                    Rx;
     
 end architecture rtl;
