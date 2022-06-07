@@ -32,6 +32,8 @@ end entity DFTControlUnit;
 
 architecture rtl of DFTControlUnit is
 
+	constant FORWARD_ADDR		: std_logic_vector(7 downto 0)		:= x"01"; -- forward audio packets to this addr
+
 	constant NOC_SET_DISABLE	: std_logic_vector(27 downto 24)	:= x"1";
 	constant NOC_SET_ENABLE		: std_logic_vector(27 downto 24) 	:= x"2";
 	constant NOC_NEW_SAMPLE		: std_logic_vector(27 downto 24) 	:= x"3";
@@ -44,6 +46,8 @@ architecture rtl of DFTControlUnit is
 
 	constant NOC_INPUT_MODE_NOC	: std_logic_vector(15 downto 0)		:= x"0001";
 	constant NOC_INPUT_MODE_DIRECT : std_logic_vector(15 downto 0)	:= x"0002";
+
+	constant AUDIO_DATA_HEADER	: std_logic_vector(3 downto 0)		:= "1000";
 
 	signal	noc_rst_sinusoid	: std_logic := '0';
 	signal	noc_enable			: std_logic := '0';
@@ -92,6 +96,8 @@ begin
 				update_output <= '0';
 			else
 
+				noc_send.data <= (others => '0');
+
 				if v_rst_sinusoid = '1' then
 					v_rst_sinusoid := '0'; -- cleared one cycle after set
 				end if;
@@ -128,11 +134,18 @@ begin
 								when others =>
 									-- invalid
 							end case;
-						when NOC_NEW_SAMPLE =>
-							v_noc_x_ready := '1'; -- set enable high for one cycle
-							v_noc_x := resize(signed(noc_recv.data(15 downto 0)), signal_word'length);
-							-- WARNING: assumes noc packet data size is matched to declared signal_word size!
 						when others =>
+							-- append to 'others =>' to support adc formatting
+							if (noc_recv.data(27 downto 24) = NOC_NEW_SAMPLE)
+								or (noc_recv.data(31 downto 28) = AUDIO_DATA_HEADER) then
+								v_noc_x_ready := '1'; -- set enable high for one cycle
+								v_noc_x := resize(signed(noc_recv.data(15 downto 0)), signal_word'length);
+								-- WARNING: assumes noc packet data size is matched to declared signal_word size!
+
+								-- then forward audio packets
+								noc_send.addr <= FORWARD_ADDR;
+								noc_send.data <= noc_recv.data;
+							end if;
 							-- invalid
 					end case;
 				end if;
@@ -141,17 +154,19 @@ begin
 				if new_window = '1' then
 					x_index := (others => '0');
 				else
-					x_index := x_index + 1;
+					if noc_enable = '1' then
+						x_index := x_index + 1;
 
-					if window_done = '0' then
-						if (x_index >= to_unsigned(WINDOW_WIDTH + PIPELINE_DELAY, x_index'length)) then
-							x_index := to_unsigned(PIPELINE_DELAY, x_index'length);
-							update_output <= '1';
-							if v_is_auto = '0' then
-								window_done := '1';
+						if window_done = '0' then
+							if (x_index >= to_unsigned(WINDOW_WIDTH + PIPELINE_DELAY, x_index'length)) then
+								x_index := to_unsigned(PIPELINE_DELAY, x_index'length);
+								update_output <= '1';
+								if v_is_auto = '0' then
+									window_done := '1';
+								end if;
+							else
+								update_output <= '0';
 							end if;
-						else
-							update_output <= '0';
 						end if;
 					end if;
 				end if;
