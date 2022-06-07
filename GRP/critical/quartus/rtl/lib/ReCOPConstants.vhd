@@ -38,7 +38,7 @@ package ReCOPConstants is
     constant MUX_A_SEL_RX           : std_logic_vector(1 downto 0)  := "01";
     constant MUX_A_SEL_ONE          : std_logic_vector(1 downto 0)  := "10";
     
-    constant MUX_B_SEL_RZ           : std_logic_vector(1 downto 0)  := "00";
-    constant MUX_B_SEL_RX           : std_logic_vector(1 downto 0)  := "01";
+    constant MUX_B_SEL_RZ           : std_logic := '1';
+    constant MUX_B_SEL_IR_OPERAND   : std_logic := '0';
     
 end package ReCOPConstants;

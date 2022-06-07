@@ -17,14 +17,14 @@ entity ReCOPDataPath is
         ALU_Control         : in std_logic_vector(1 downto 0);
 		z_out               : out std_logic;
 
-        ALU_mux_A_select    : in std_logic_vector(1 downto 0);
+        -- ALU_mux_A_select    : in std_logic_vector(1 downto 0);
         ALU_mux_B_select    : in std_logic;
 
         -- register file
         wren			    : in std_logic;
         rden_x			    : in std_logic;
         rden_z			    : in std_logic;
-        RF_in_select        : in std_logic_vector(2 downto 0);
+        RF_in_select        : in std_logic_vector(1 downto 0);
 
         -- data memory
         we                  : in std_logic;
@@ -36,10 +36,10 @@ entity ReCOPDataPath is
         -- instruction register
         wr_IR               : in std_logic;
 
-        -- stack pointer
-        wr_SP               : in std_logic;
-        SP_mux_select       : in std_logic_vector(1 downto 0);
-        push_not_pull       : in std_logic;
+        -- -- stack pointer
+        -- wr_SP               : in std_logic;
+        -- SP_mux_select       : in std_logic_vector(1 downto 0);
+        -- push_not_pull       : in std_logic;
 
         -- address register
         wr_AR               : in std_logic;
@@ -305,24 +305,24 @@ begin
                     ALU_OUT when RF_in_select = RF_IN_SEL_ALU_OUT else
                     ALU_OUT;
 
-    StackPointer: ReCOPStackPointer
-        generic map (
-            SP_init => SP_BASE
-        )
-        port map (
-            clk => clk,
-            rst => rst,
+    -- StackPointer: ReCOPStackPointer
+    --     generic map (
+    --         SP_init => SP_BASE
+    --     )
+    --     port map (
+    --         clk => clk,
+    --         rst => rst,
 
-            wr_SP => wr_SP,
-            mux_select => SP_mux_select,
-            push_not_pull => push_not_pull,
+    --         wr_SP => wr_SP,
+    --         mux_select => SP_mux_select,
+    --         push_not_pull => push_not_pull,
 
-            DM_OUT => DM_OUT,
-            operand => IR_Operand,
+    --         DM_OUT => DM_OUT,
+    --         operand => IR_Operand,
 
-            SP => SP,
-            SP_incremented => SP_incremented
-        );
+    --         SP => SP,
+    --         SP_incremented => SP_incremented
+    --     );
     
     
     AddressRegister: ReCOPAddressRegister
@@ -355,13 +355,15 @@ begin
                 z_out           => z_out
             );
 
-        ALU_mux_A <=    IR_Operand when ALU_mux_A_select = MUX_A_SEL_IR_OPERAND else
-                        Rx when ALU_mux_A_select = MUX_A_SEL_RX else
-                        std_logic_vector(to_unsigned(1, ALU_mux_A'length)) when ALU_mux_A_select = MUX_A_SEL_ONE else
-                        std_logic_vector(to_unsigned(1, ALU_mux_A'length));
+        ALU_mux_A <=   Rx;
 
-        ALU_mux_B <=    Rz when ALU_mux_A_select = MUX_B_SEL_RZ else
-                        Rx when ALU_mux_A_select = MUX_B_SEL_RX else
+        -- ALU_mux_A <=    IR_Operand when ALU_mux_A_select = MUX_A_SEL_IR_OPERAND else
+        --                 Rx when ALU_mux_A_select = MUX_A_SEL_RX else
+        --                 std_logic_vector(to_unsigned(1, ALU_mux_A'length)) when ALU_mux_A_select = MUX_A_SEL_ONE else
+        --                 std_logic_vector(to_unsigned(1, ALU_mux_A'length));
+
+        ALU_mux_B <=    Rz when ALU_mux_B_select = MUX_B_SEL_RZ else
+                        IR_Operand when ALU_mux_B_select = MUX_B_SEL_IR_OPERAND else
                         Rx;
 
         DM: single_port_ram
