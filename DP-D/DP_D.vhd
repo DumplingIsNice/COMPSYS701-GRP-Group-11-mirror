@@ -42,12 +42,12 @@ architecture behaviour of DP_D is
 		dense : process(clock)
 		
 		variable init_weight : integer := 1;
-		variable multi			: integer;
-		variable sum			: integer;
-		variable dot   : integer;
+		variable multi			: signed(15 downto 0);
+		variable dot 		   : signed(15 downto 0);
+		variable sum			: signed(15 downto 0);
 		variable e_x			: integer;
 		variable dot_k			: integer;
-		variable softmax 		: integer;
+		variable softmax 		: signed(15 downto 0);
 		variable test   : std_logic_vector(15 downto 0);
 		
 		begin
@@ -59,10 +59,10 @@ architecture behaviour of DP_D is
 --			performs dot product operation on input(N) and weight(N,M)
 			for i in 0 to M-1 loop
 				for j in 0 to N-1 loop
-					multi :=  to_integer(signed(weight(j*M+i))) + to_integer(signed(input(j)));
+					multi :=  signed(weight(j*M+i)) + signed(input(j));
 					dot := dot + multi;
 				end loop;
-				output(i) <= std_logic_vector(to_signed(dot, 16));
+				output(i) <= std_logic_vector(dot);
 			end loop;
 
 --			activation functions
@@ -72,14 +72,14 @@ architecture behaviour of DP_D is
 				for k in 0 to M-1 loop -- calculates the e^x value for every unit in the dot product output vector using an approximation
 					dot_k := to_integer(signed(output(k)));
 					e_x := 1 + dot_k + ((dot_k **2)/2) + ((dot_k**3)/6) + ((dot_k**4)/24);
-					exp(k) <= std_logic_vector(to_signed(e_x, 16));
 					sum  := sum + e_x; --sum of all e^x values 
+					exp(k) <= std_logic_vector(to_signed(e_x, 16)); --store all e^x values in the exp array
 				end loop;
 			
 				
 				for l in 0 to M-1 loop
-					softmax := to_integer(signed(exp(l))) / sum;
-					output(l) <= std_logic_vector(to_signed(softmax, 16));
+					softmax := signed(exp(l)) / sum;
+					output(l) <= std_logic_vector(softmax);
 				end loop;
 				
 				
