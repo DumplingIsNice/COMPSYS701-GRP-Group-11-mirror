@@ -58,9 +58,10 @@ architecture rtl of DFTControlUnit is
 
 begin
 
-	enable <= '1' when (noc_enable = '1' and
-					((x_direct_ready = '1' and noc_select_direct_x = '1')
-					or (noc_x_ready = '1' and noc_select_direct_x = '0'))) else '0';
+	-- enable <= '1' when (noc_enable = '1' and
+	-- 				((x_direct_ready = '1' and noc_select_direct_x = '1')
+	-- 				or (noc_x_ready = '1' and noc_select_direct_x = '0'))) else '0';
+	enable <= noc_enable;
 					-- run datapath when enabled and data ready for processing
 	rst_sinusoid <= '1' when (new_window = '1' or noc_rst_sinusoid = '1') else '0'; -- auto run starts new window
 
@@ -77,7 +78,10 @@ begin
 		variable v_noc_x		: signal_word := (others => '0');
 		variable v_noc_x_ready	: std_logic := '0';
 
+		variable v_prev_noc_enable : std_logic := '0'; -- capture edge
+
 		variable window_done	: std_logic := '0'; -- internal flag used in trigger run mode to only run once
+		variable v_update_output: std_logic := '0';
 		variable x_index		: unsigned(natural(ceil(log2(real(WINDOW_WIDTH + PIPELINE_DELAY)))) downto 0)	:= (others => '0');
 	begin
 		if rising_edge(clk) then
@@ -98,12 +102,17 @@ begin
 
 				noc_send.data <= (others => '0');
 
-				if v_rst_sinusoid = '1' then
-					v_rst_sinusoid := '0'; -- cleared one cycle after set
+				if v_rst_sinusoid = '1' and noc_enable = '1' and v_prev_noc_enable = '1' then
+					v_rst_sinusoid := '0'; -- cleared one full cycle after set
 				end if;
-				if v_noc_x_ready = '1' then
-					v_noc_x_ready := '0'; -- cleared one cycle after set
+				if v_noc_x_ready = '1' and noc_enable = '1' and v_prev_noc_enable = '1' then
+					v_noc_x_ready := '0'; -- cleared one full cycle after set
 				end if;
+				if (v_update_output = '1' and noc_enable = '1' and v_prev_noc_enable = '1') then
+					v_update_output := '0'; -- cleared one full cycle after set
+				end if;
+
+				v_prev_noc_enable := noc_enable;
 
 				if noc_recv.data(31) = '1' then
 					case noc_recv.data(27 downto 24) is
@@ -160,20 +169,28 @@ begin
 						if window_done = '0' then
 							if (x_index >= to_unsigned(WINDOW_WIDTH + PIPELINE_DELAY, x_index'length)) then
 								x_index := to_unsigned(PIPELINE_DELAY, x_index'length);
-								update_output <= '1';
+								v_update_output := '1';
 								if v_is_auto = '0' then
 									window_done := '1';
 								end if;
-							else
-								update_output <= '0';
 							end if;
 						end if;
 					end if;
 				end if;
 			end if;
 
+			update_output <= v_update_output;
+
+			if (v_enable = '1' and
+				((x_direct_ready = '1' and noc_select_direct_x = '1')
+				or (noc_x_ready = '1' and noc_select_direct_x = '0')))
+				then
+				noc_enable <= '1';
+			else
+				noc_enable <= '0';
+			end if;
+
 			noc_rst_sinusoid <= v_rst_sinusoid;
-			noc_enable <= v_enable;
 
 			noc_select_direct_x <= v_input_mode_direct;
 			noc_x <= v_noc_x;
