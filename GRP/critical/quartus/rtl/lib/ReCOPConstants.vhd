@@ -18,12 +18,27 @@ package ReCOPConstants is
     constant GENERAL_ADDR_WIDTH : integer   := 10;
 
     constant PM_ADDR_WIDTH   : integer := GENERAL_ADDR_WIDTH;     -- Program Memory Length (2^x)
-    constant PM_DATA_WIDTH   : integer := 32;
+    constant PM_DATA_WIDTH   : integer := 16;
 
     constant DM_ADDR_WIDTH   : integer := GENERAL_ADDR_WIDTH;
-    constant DM_DATA_WIDTH   : integer := 32;
+    constant DM_DATA_WIDTH   : integer := 16;
+
+    constant REG_FILE_DATA_WIDTH : integer := 16;
 
     -- ReCOPAddressRegister intialisation addr
     constant AR_INIT : recop_mem_addr := (others => '0');
+
+    -- Control Signals
+    ------------------------------------------------------------------------
+    constant RF_IN_SEL_IR_OPERAND   : std_logic_vector(1 downto 0)  := "00";
+    constant RF_IN_SEL_RX           : std_logic_vector(1 downto 0)  := "01";
+    constant RF_IN_SEL_ALU_OUT      : std_logic_vector(1 downto 0)  := "10";
+
+    constant MUX_A_SEL_IR_OPERAND   : std_logic_vector(1 downto 0)  := "00";
+    constant MUX_A_SEL_RX           : std_logic_vector(1 downto 0)  := "01";
+    constant MUX_A_SEL_ONE          : std_logic_vector(1 downto 0)  := "10";
+    
+    constant MUX_B_SEL_RZ           : std_logic_vector(1 downto 0)  := "00";
+    constant MUX_B_SEL_RX           : std_logic_vector(1 downto 0)  := "01";
     
 end package ReCOPConstants;

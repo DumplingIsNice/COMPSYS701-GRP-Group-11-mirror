@@ -12,6 +12,19 @@ entity ReCOPDataPath is
         rst     : in std_logic;
         
         -- control
+        --------------------------------------------------
+        -- ALU
+        ALU_Control         : in std_logic_vector(1 downto 0);
+		z_out               : out std_logic;
+
+        ALU_mux_A_select    : in std_logic_vector(1 downto 0);
+        ALU_mux_B_select    : in std_logic;
+
+        -- register file
+        wren			    : in std_logic;
+        rden_x			    : in std_logic;
+        rden_z			    : in std_logic;
+        RF_in_select        : in std_logic_vector(2 downto 0);
 
         -- data memory
         we                  : in std_logic;
@@ -108,11 +121,44 @@ architecture rtl of ReCOPDataPath is
 
 
     -- Register File --
-    -- INSERT HERE
+	COMPONENT ReCOPRegisterFile
+		GENERIC ( DATA_WIDTH : INTEGER );
+		PORT
+		(
+			clk				:	 IN STD_LOGIC;
+			data				:	 IN STD_LOGIC_VECTOR(data_width-1 DOWNTO 0);
+			wraddress		:	 IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+			rdaddress_x		:	 IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+			rdaddress_z		:	 IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+			wren				:	 IN STD_LOGIC;
+			rden_x			:	 IN STD_LOGIC;
+			rden_z			:	 IN STD_LOGIC;
+			Rx					:	 OUT STD_LOGIC_VECTOR(data_width-1 DOWNTO 0);
+			Rz					:	 OUT STD_LOGIC_VECTOR(data_width-1 DOWNTO 0)
+		);
+	END COMPONENT ReCOPRegisterFile;	
 
+    signal rf_data_in, Rx, Rz   : STD_LOGIC_VECTOR(REG_FILE_DATA_WIDTH-1 DOWNTO 0);
 
     -- ALU --
-    -- INSERT HERE
+    component ReCOPALU is
+        generic (
+            DATA_WIDTH : integer := 16
+        );
+        port(clock : in std_logic;
+            ALU_Control : in std_logic_vector(1 downto 0);
+            inputA : in std_logic_vector(DATA_WIDTH-1 downto 0);
+            inputB : in std_logic_vector(DATA_WIDTH-1 downto 0);
+            ALU_Out : out std_logic_vector(DATA_WIDTH-1 downto 0);
+            z_out : out std_logic
+            );
+    end component ReCOPALU;
+
+    signal inputA   : recop_data;
+    signal inputB   : recop_data;
+    signal ALU_Out  : recop_data;
+
+    signal ALU_mux_A, ALU_mux_B : recop_data;
 
 
     -- Stack Pointer --
@@ -169,8 +215,8 @@ architecture rtl of ReCOPDataPath is
 	component single_port_ram is
 		generic 
 		(
-			DATA_WIDTH : natural := DM_DATA_WIDTH;
-			ADDR_WIDTH : natural := DM_ADDR_WIDTH
+			DATA_WIDTH : natural;
+			ADDR_WIDTH : natural
 		);
 		port 
 		(
@@ -235,7 +281,29 @@ begin
         );
 
     -- RegisterFile: ReCOPRegisterFile
-    
+	RF: ReCOPRegisterFile
+		GENERIC MAP 
+		( 
+			DATA_WIDTH => REG_FILE_DATA_WIDTH
+		)
+		PORT MAP
+		(
+			clk				=> clk,
+			data			=> rf_data_in,
+			wraddress		=> PM_OUT(8 downto 6),
+			rdaddress_x		=> IR_Rx,
+			rdaddress_z		=> IR_Rz,
+			wren			=> wren,
+			rden_x			=> rden_x,
+			rden_z			=> rden_z,
+			Rx				=> Rx,
+			Rz				=> Rz
+		);
+
+    rf_data_in <=   IR_Operand when RF_in_select = RF_IN_SEL_IR_OPERAND else
+                    Rx when RF_in_select = RF_IN_SEL_RX else
+                    ALU_OUT when RF_in_select = RF_IN_SEL_ALU_OUT else
+                    ALU_OUT;
 
     StackPointer: ReCOPStackPointer
         generic map (
@@ -275,6 +343,26 @@ begin
             -- outputs
             DM_ADR => DM_ADR
         );
+
+        ALU: ReCOPALU
+            port map
+            (   
+                clock           => clk,
+                ALU_Control     => ALU_Control,
+                inputA          => ALU_mux_A,
+                inputB          => ALU_mux_B,
+                ALU_Out         => ALU_OUT,
+                z_out           => z_out
+            );
+
+        ALU_mux_A <=    IR_Operand when ALU_mux_A_select = MUX_A_SEL_IR_OPERAND else
+                        Rx when ALU_mux_A_select = MUX_A_SEL_RX else
+                        std_logic_vector(to_unsigned(1, ALU_mux_A'length)) when ALU_mux_A_select = MUX_A_SEL_ONE else
+                        std_logic_vector(to_unsigned(1, ALU_mux_A'length));
+
+        ALU_mux_B <=    Rz when ALU_mux_A_select = MUX_B_SEL_RZ else
+                        Rx when ALU_mux_A_select = MUX_B_SEL_RX else
+                        Rx;
 
         DM: single_port_ram
 		generic map
