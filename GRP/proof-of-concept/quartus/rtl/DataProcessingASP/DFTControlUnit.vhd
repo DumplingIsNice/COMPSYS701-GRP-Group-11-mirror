@@ -58,9 +58,6 @@ architecture rtl of DFTControlUnit is
 
 begin
 
-	-- enable <= '1' when (noc_enable = '1' and
-	-- 				((x_direct_ready = '1' and noc_select_direct_x = '1')
-	-- 				or (noc_x_ready = '1' and noc_select_direct_x = '0'))) else '0';
 	enable <= noc_enable;
 					-- run datapath when enabled and data ready for processing
 	rst_sinusoid <= '1' when (new_window = '1' or noc_rst_sinusoid = '1') else '0'; -- auto run starts new window

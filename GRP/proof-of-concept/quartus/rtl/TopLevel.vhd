@@ -64,7 +64,7 @@ architecture rtl of TopLevel is
 begin
 
     clk <= CLOCK_50;
-    rst <= '0';
+    rst <= not KEY(2);
 
 	LEDR <= (others => '1') when (magnitudes_updated = '1') else control_ledr;
 	update_disp <= magnitudes_updated or KEY(3);

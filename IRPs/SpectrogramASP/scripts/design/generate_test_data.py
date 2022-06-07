@@ -66,7 +66,8 @@ np.savetxt(os.getcwd() + f"/generated/int{bits}_dft_mag.txt", dft_magnitude, fmt
 
 
 """VHDL LUT Values"""
-k_range = np.arange(0, samples // 2)
+resolution = 4  # step size of 1 is max resolution
+k_range = np.arange(0, samples // 2, resolution)
 sin_nwk = (pow(2, bits - 1) - 1) * np.sin(-2 * np.pi * k_range / samples)
 cos_nwk = (pow(2, bits - 1) - 1) * np.cos(-2 * np.pi * k_range / samples)
 k_as_frequencies = k_range * (sample_frequency / samples)

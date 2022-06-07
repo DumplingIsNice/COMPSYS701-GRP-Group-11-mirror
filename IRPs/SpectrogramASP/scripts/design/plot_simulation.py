@@ -7,7 +7,7 @@ from plotly.subplots import make_subplots
 # load script generated reference Signal
 test_signal = np.loadtxt("generated/int16_signal.txt", dtype=int)
 # load simulation output (from modelsim)
-magnitudes = np.loadtxt("generated/simulation/test_log.txt", dtype=int)
+magnitudes = np.loadtxt("generated/simulation/test_log_noc.txt", dtype=int)
 # load script generated frequencies for each value of k
 frequencies = np.loadtxt("generated/LUT_frequencies.txt", dtype=int)
 
