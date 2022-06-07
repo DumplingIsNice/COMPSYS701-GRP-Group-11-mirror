@@ -20,7 +20,7 @@ entity DFTDataPath is
         -- inputs
         x					: in signal_word;
         -- outputs
-        magnitudes			: out magnitudes_array;
+        magnitudes			: out magnitudes_array := (others => (others => '0'));
         output_updated      : out std_logic -- pulses a tick after update_output is received
     );
 end entity DFTDataPath;

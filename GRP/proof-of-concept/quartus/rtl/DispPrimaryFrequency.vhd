@@ -44,6 +44,10 @@ begin
         if rising_edge(clk) then
             if rst = '1' then
                 is_done := '0';
+                
+                index := 0;
+                sig_max := (others => '0');
+                i_max := 0;
 
                 hex0 <= (others => '0');
                 hex1 <= (others => '0');
