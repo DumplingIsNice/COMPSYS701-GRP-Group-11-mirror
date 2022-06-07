@@ -210,6 +210,7 @@ set_location_assignment PIN_AB27 -to HEX5[3]
 set_location_assignment PIN_AB26 -to HEX5[4]
 set_location_assignment PIN_AA26 -to HEX5[5]
 set_location_assignment PIN_AA25 -to HEX5[6]
+set_global_assignment -name VHDL_FILE rtl/AspControl.vhd
 set_global_assignment -name VHDL_FILE rtl/Util/HexSeg.vhd
 set_global_assignment -name VHDL_FILE rtl/DispPrimaryFrequency.vhd
 set_global_assignment -name VHDL_FILE ip/AudioFifo/AudioFifo.vhd -library ip

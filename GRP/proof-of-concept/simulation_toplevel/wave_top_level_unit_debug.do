@@ -63,6 +63,7 @@ add wave -noupdate /grp_testbench/INIT_DFT/port_delay_counter
 add wave -noupdate /grp_testbench/INIT_DFT/state
 add wave -noupdate /grp_testbench/INIT_DFT/edge3
 add wave -noupdate /grp_testbench/INIT_DFT/dft_port
+add wave -noupdate -radix hexadecimal /grp_testbench/send_port(7)
 add wave -noupdate -divider disp
 add wave -noupdate /grp_testbench/DispFrequency/clk
 add wave -noupdate /grp_testbench/DispFrequency/rst
@@ -81,7 +82,7 @@ add wave -noupdate /grp_testbench/DispFrequency/hex3
 add wave -noupdate /grp_testbench/DispFrequency/hex4
 add wave -noupdate /grp_testbench/DispFrequency/hex5
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {3797698 ps} 0}
+WaveRestoreCursors {{Cursor 1} {4640000 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 415
 configure wave -valuecolwidth 100
@@ -97,4 +98,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {3782384 ps}
+WaveRestoreZoom {3110993 ps} {6786428 ps}
