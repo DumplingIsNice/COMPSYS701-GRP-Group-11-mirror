@@ -132,5 +132,20 @@ begin
         noc_recv => recv_port(2)
     );
 
+	DispFrequency : entity work.DispPrimaryFrequency
+	port map (
+		clk => clk,
+		rst => rst,
+		-- inputs
+		enable => magnitudes_updated,
+		magnitudes => magnitudes,
+		-- outputs
+		seg0 => HEX0,
+		seg1 => HEX1,
+		seg2 => HEX2,
+		seg3 => HEX3,
+		seg4 => HEX4,
+		seg5 => HEX5
+	);
 
 end architecture rtl;

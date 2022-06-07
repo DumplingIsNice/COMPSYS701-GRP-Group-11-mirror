@@ -56,6 +56,24 @@ architecture test of DFT_Testbench is
 		);
 	end component DFTDataPath;
 
+    component DispPrimaryFrequency is
+        port (
+            clk     : in std_logic;
+            rst     : in std_logic;
+    
+            -- inputs
+            enable          : in std_logic;
+            magnitudes      : in magnitudes_array;
+            -- outputs
+            seg0            : out std_logic_vector(6 downto 0);
+            seg1            : out std_logic_vector(6 downto 0);
+            seg2            : out std_logic_vector(6 downto 0);
+            seg3            : out std_logic_vector(6 downto 0);
+            seg4            : out std_logic_vector(6 downto 0);
+            seg5            : out std_logic_vector(6 downto 0)
+        );
+    end component DispPrimaryFrequency;
+
     constant    CLK_PERIOD  : time      := 10 ns;
     signal      clk         : std_logic := '0';
     signal      rst         : std_logic := '0';
@@ -79,6 +97,22 @@ begin
 
     clk <= not clk after CLK_PERIOD/2;
     placeholder <= clk;
+
+    DispFrequency : DispPrimaryFrequency
+        port map (
+            clk => clk,
+            rst => rst,
+            -- inputs
+            enable => output_updated,
+            magnitudes => magnitudes,
+            -- outputs
+            seg0 => open,
+            seg1 => open,
+            seg2 => open,
+            seg3 => open,
+            seg4 => open,
+            seg5 => open
+        );
 
     ControlUnit: DFTControlUnit
         port map (
