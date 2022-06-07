@@ -19,8 +19,8 @@ end entity;
 
 architecture rtl of AspAdc is
 
-	signal addr_0   : std_logic_vector(3 downto 0) := "0010";
-	signal addr_1   : std_logic_vector(3 downto 0) := "0010";
+	signal addr_0   : std_logic_vector(3 downto 0) := x"1";
+	signal addr_1   : std_logic_vector(3 downto 0) := x"1";
 	signal rate_0   : std_logic_vector(1 downto 0) := "00";
 	signal rate_1   : std_logic_vector(1 downto 0) := "00";
 	signal enable_0 : std_logic := '0';

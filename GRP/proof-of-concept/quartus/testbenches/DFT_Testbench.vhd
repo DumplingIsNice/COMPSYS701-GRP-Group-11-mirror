@@ -62,7 +62,7 @@ architecture test of DFT_Testbench is
             rst     : in std_logic;
     
             -- inputs
-            enable          : in std_logic;
+            start_run       : in std_logic;
             magnitudes      : in magnitudes_array;
             -- outputs
             seg0            : out std_logic_vector(6 downto 0);
@@ -103,7 +103,7 @@ begin
             clk => clk,
             rst => rst,
             -- inputs
-            enable => output_updated,
+            start_run => output_updated,
             magnitudes => magnitudes,
             -- outputs
             seg0 => open,

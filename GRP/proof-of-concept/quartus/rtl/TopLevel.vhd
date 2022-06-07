@@ -34,10 +34,11 @@ entity TopLevel is
 		HEX2          : out   std_logic_vector(6 downto 0);
 		HEX3          : out   std_logic_vector(6 downto 0);
 		HEX4          : out   std_logic_vector(6 downto 0);
-		HEX5          : out   std_logic_vector(6 downto 0);
+		HEX5          : out   std_logic_vector(6 downto 0)
 
-        magnitudes          : out magnitudes_array;
-        magnitudes_updated  : out std_logic
+		-- disabled output ports for synthesis (otherwise attempts to allocate pins)
+        -- magnitudes          : out magnitudes_array;
+        -- magnitudes_updated  : out std_logic
     );
 end entity TopLevel;
 
@@ -51,6 +52,9 @@ architecture rtl of TopLevel is
 	signal dac_full  : std_logic;
 	signal dac_put   : std_logic;
 	signal dac_data  : std_logic_vector(16 downto 0);
+
+	signal magnitudes          	: magnitudes_array;
+	signal magnitudes_updated	: std_logic;
 
     signal send_port : tdma_min_ports(0 to ports-1);
 	signal recv_port : tdma_min_ports(0 to ports-1);
@@ -137,7 +141,7 @@ begin
 		clk => clk,
 		rst => rst,
 		-- inputs
-		enable => magnitudes_updated,
+		start_run => magnitudes_updated,
 		magnitudes => magnitudes,
 		-- outputs
 		seg0 => HEX0,
@@ -147,5 +151,58 @@ begin
 		seg4 => HEX4,
 		seg5 => HEX5
 	);
+
+	INIT_DFT: process(clk)
+		constant test_port	: natural := 7; -- co-opt an unused port
+		constant dft_port	: std_logic_vector(7 downto 0) := x"02";
+
+		variable state : std_logic_vector(3 downto 0) := x"f";
+	begin
+		if rising_edge(clk) then
+			if rst = '1' or KEY(3) = '0' then
+				state := x"0";
+			else
+				case state is
+					when x"0" =>
+						-- set input mode as direct via NoC
+						send_port(test_port).addr <= dft_port;
+						send_port(test_port).data(31) <= '1';
+						send_port(test_port).data(27 downto 24) <= x"6"; -- NOC_SET_INPUT_MODE
+						send_port(test_port).data(15 downto 0) <= x"0002"; -- NOC_INPUT_MODE_DIRECT
+
+						state := x"1";
+					when x"1" =>
+						-- set run mode as auto
+						send_port(test_port).addr <= dft_port;
+						send_port(test_port).data(31) <= '1';
+						send_port(test_port).data(27 downto 24) <= x"5"; -- NOC_SET_RUN_MODE
+						send_port(test_port).data(15 downto 0) <= x"0001"; -- NOC_RUN_MODE_AUTO
+
+						state := x"2";
+					when x"2" =>
+						-- enable
+						send_port(test_port).addr <= dft_port;
+						send_port(test_port).data(31) <= '1';
+						send_port(test_port).data(27 downto 24) <= x"2"; -- NOC_SET_ENABLE
+
+						state := x"3";
+					when x"3" =>
+						-- start new window
+						send_port(test_port).addr <= dft_port;
+						send_port(test_port).data(31) <= '1';
+						send_port(test_port).data(27 downto 24) <= x"4"; -- NOC_NEW_WINDOW
+
+						state := x"4";
+					when x"4" =>
+						-- clear port
+						send_port(test_port).data <= (others => '0');
+
+						state := x"5";
+					when others =>
+						-- do nothing
+				end case;
+			end if;
+		end if;
+	end process INIT_DFT;
 
 end architecture rtl;
