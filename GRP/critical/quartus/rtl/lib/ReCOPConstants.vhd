@@ -24,6 +24,7 @@ package ReCOPConstants is
     constant DM_DATA_WIDTH   : integer := 16;
 
     constant REG_FILE_DATA_WIDTH : integer := 16;
+    constant REG_FILE_ADDR_WIDTH : integer := 4;
 
     -- ReCOPAddressRegister intialisation addr
     constant AR_INIT : recop_mem_addr := (others => '0');

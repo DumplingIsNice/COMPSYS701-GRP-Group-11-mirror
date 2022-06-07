@@ -129,8 +129,8 @@ architecture rtl of ReCOPDataPath is
 			clk				:	 IN STD_LOGIC;
 			data				:	 IN STD_LOGIC_VECTOR(data_width-1 DOWNTO 0);
 			wraddress		:	 IN STD_LOGIC_VECTOR(2 DOWNTO 0);
-			rdaddress_x		:	 IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-			rdaddress_z		:	 IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+			rdaddress_x		:	 IN STD_LOGIC_VECTOR(REG_FILE_ADDR_WIDTH-1 DOWNTO 0);
+			rdaddress_z		:	 IN STD_LOGIC_VECTOR(REG_FILE_ADDR_WIDTH-1 DOWNTO 0);
 			wren				:	 IN STD_LOGIC;
 			rden_x			:	 IN STD_LOGIC;
 			rden_z			:	 IN STD_LOGIC;

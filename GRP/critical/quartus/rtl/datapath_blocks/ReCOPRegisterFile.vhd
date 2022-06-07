@@ -22,8 +22,8 @@ entity ReCOPRegisterFile is
 		data				: IN STD_LOGIC_VECTOR (DATA_WIDTH-1 DOWNTO 0);
 		wraddress		: IN STD_LOGIC_VECTOR (2 DOWNTO 0);
 		
-		rdaddress_x		: IN STD_LOGIC_VECTOR (3 DOWNTO 0);
-		rdaddress_z		: IN STD_LOGIC_VECTOR (3 DOWNTO 0);
+		rdaddress_x		: IN STD_LOGIC_VECTOR (REG_FILE_ADDR_WIDTH-1 DOWNTO 0);
+		rdaddress_z		: IN STD_LOGIC_VECTOR (REG_FILE_ADDR_WIDTH-1 DOWNTO 0);
 		
 		wren				: IN STD_LOGIC  := '1';
 		rden_x			: IN STD_LOGIC  := '1';
@@ -68,10 +68,10 @@ architecture rtl of ReCOPRegisterFile is
 		inclock				: IN STD_LOGIC ;
 		data				: IN STD_LOGIC_VECTOR (15 DOWNTO 0);
 		rden_a				: IN STD_LOGIC ;
-		rdaddress_a			: IN STD_LOGIC_VECTOR (3 DOWNTO 0);
+		rdaddress_a			: IN STD_LOGIC_VECTOR (REG_FILE_ADDR_WIDTH-1 DOWNTO 0);
 		wraddress			: IN STD_LOGIC_VECTOR (2 DOWNTO 0);
 		rden_b				: IN STD_LOGIC ;
-		rdaddress_b			: IN STD_LOGIC_VECTOR (3 DOWNTO 0)
+		rdaddress_b			: IN STD_LOGIC_VECTOR (REG_FILE_ADDR_WIDTH-1 DOWNTO 0)
 	);
 	END COMPONENT;
 
@@ -82,8 +82,8 @@ begin
 
 	alt3pram_component : alt3pram
 	GENERIC MAP (
-		width => DM_DATA_WIDTH,
-		widthad => REG_FILE_DATA_WIDTH,
+		width => REG_FILE_DATA_WIDTH,
+		widthad => REG_FILE_ADDR_WIDTH,
 		indata_reg => "INCLOCK",
 		write_reg => "INCLOCK",
 		rdaddress_reg_a => "INCLOCK",

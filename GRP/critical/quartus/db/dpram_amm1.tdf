@@ -1,0 +1,49 @@
+--altdpram ACF_BLOCK_RAM_AND_MLAB_EQUIVALENT_PAUSED_READ_CAPABILITIES="CARE" CBX_DECLARE_ALL_CONNECTED_PORTS="OFF" DEVICE_FAMILY="Cyclone V" INDATA_ACLR="OFF" INDATA_REG="INCLOCK" NUMWORDS=16 OUTDATA_ACLR="OFF" OUTDATA_REG="UNREGISTERED" RDADDRESS_ACLR="OFF" RDADDRESS_REG="INCLOCK" RDCONTROL_ACLR="OFF" RDCONTROL_REG="INCLOCK" USE_EAB="ON" WIDTH=16 WIDTHAD=4 WRADDRESS_ACLR="OFF" WRADDRESS_REG="INCLOCK" WRCONTROL_ACLR="OFF" WRCONTROL_REG="INCLOCK" data inclock q rdaddress rden wraddress wren CARRY_CHAIN="MANUAL" CARRY_CHAIN_LENGTH=48 CYCLONEII_M4K_COMPATIBILITY="ON" LOW_POWER_MODE="AUTO"
+--VERSION_BEGIN 18.1 cbx_altdpram 2018:09:12:13:04:24:SJ cbx_altera_syncram 2018:09:12:13:04:24:SJ cbx_altera_syncram_nd_impl 2018:09:12:13:04:24:SJ cbx_altsyncram 2018:09:12:13:04:24:SJ cbx_cycloneii 2018:09:12:13:04:24:SJ cbx_lpm_add_sub 2018:09:12:13:04:24:SJ cbx_lpm_compare 2018:09:12:13:04:24:SJ cbx_lpm_decode 2018:09:12:13:04:24:SJ cbx_lpm_mux 2018:09:12:13:04:24:SJ cbx_mgl 2018:09:12:13:10:36:SJ cbx_nadder 2018:09:12:13:04:24:SJ cbx_stratix 2018:09:12:13:04:24:SJ cbx_stratixii 2018:09:12:13:04:24:SJ cbx_stratixiii 2018:09:12:13:04:24:SJ cbx_stratixv 2018:09:12:13:04:24:SJ cbx_util_mgl 2018:09:12:13:04:24:SJ  VERSION_END
+
+
+-- Copyright (C) 2018  Intel Corporation. All rights reserved.
+--  Your use of Intel Corporation's design tools, logic functions 
+--  and other software and tools, and its AMPP partner logic 
+--  functions, and any output files from any of the foregoing 
+--  (including device programming or simulation files), and any 
+--  associated documentation or information are expressly subject 
+--  to the terms and conditions of the Intel Program License 
+--  Subscription Agreement, the Intel Quartus Prime License Agreement,
+--  the Intel FPGA IP License Agreement, or other applicable license
+--  agreement, including, without limitation, that your use is for
+--  the sole purpose of programming logic devices manufactured by
+--  Intel and sold by Intel or its authorized distributors.  Please
+--  refer to the applicable agreement for further details.
+
+
+FUNCTION altsyncram_emv1 (address_a[3..0], address_b[3..0], clock0, data_a[15..0], rden_b, wren_a)
+RETURNS ( q_b[15..0]);
+
+--synthesis_resources = M10K 1 
+SUBDESIGN dpram_amm1
+( 
+	data[15..0]	:	input;
+	inclock	:	input;
+	q[15..0]	:	output;
+	rdaddress[3..0]	:	input;
+	rden	:	input;
+	wraddress[3..0]	:	input;
+	wren	:	input;
+) 
+VARIABLE 
+	altsyncram1 : altsyncram_emv1;
+
+BEGIN 
+	altsyncram1.address_a[] = wraddress[];
+	altsyncram1.address_b[] = rdaddress[];
+	altsyncram1.clock0 = inclock;
+	altsyncram1.data_a[] = data[];
+	altsyncram1.rden_b = rden;
+	altsyncram1.wren_a = wren;
+	q[] = altsyncram1.q_b[];
+	ASSERT (0) 
+	REPORT "ALTDPRAM doesn't support Cyclone V. Trying for best case memory conversions. The power up states will be different for stratix as well as read during write modes"
+	SEVERITY WARNING;
+END;
+--VALID FILE
