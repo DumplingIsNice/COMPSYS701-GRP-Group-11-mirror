@@ -1,0 +1,21 @@
+Fitter Status : Successful - Tue Jun 07 14:13:45 2022
+Quartus II 64-Bit Version : 13.0.0 Build 156 04/24/2013 SJ Full Version
+Revision Name : DP_C
+Top-level Entity Name : DP_C
+Family : Cyclone V
+Device : 5CSEMA5F31C6
+Timing Models : Preliminary
+Logic utilization (in ALMs) : 15,901 / 32,070 ( 50 % )
+Total registers : 9659
+Total pins : 0 / 457 ( 0 % )
+Total virtual pins : 4,181
+Total block memory bits : 0 / 4,065,280 ( 0 % )
+Total DSP Blocks : 36 / 87 ( 41 % )
+Total HSSI RX PCSs : 0
+Total HSSI PMA RX Deserializers : 0
+Total HSSI PMA RX ATT Deserializers : 0
+Total HSSI TX PCSs : 0
+Total HSSI PMA TX Serializers : 0
+Total HSSI PMA TX ATT Serializers : 0
+Total PLLs : 0 / 6 ( 0 % )
+Total DLLs : 0 / 4 ( 0 % )

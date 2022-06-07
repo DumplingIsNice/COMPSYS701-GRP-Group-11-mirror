@@ -1,0 +1,117 @@
+------------------------------------------------------------
+TimeQuest Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow 1100mV 85C Model Setup 'current_state'
+Slack : -38.860
+TNS   : -85375.444
+
+Type  : Slow 1100mV 85C Model Setup 'clk'
+Slack : -38.695
+TNS   : -82192.770
+
+Type  : Slow 1100mV 85C Model Hold 'clk'
+Slack : -3.507
+TNS   : -50.538
+
+Type  : Slow 1100mV 85C Model Hold 'current_state'
+Slack : -2.340
+TNS   : -3.812
+
+Type  : Slow 1100mV 85C Model Minimum Pulse Width 'current_state'
+Slack : -0.394
+TNS   : -5781.849
+
+Type  : Slow 1100mV 85C Model Minimum Pulse Width 'clk'
+Slack : -0.394
+TNS   : -1564.702
+
+Type  : Slow 1100mV 85C Model Minimum Pulse Width 'noc_recv.addr[0]'
+Slack : 0.418
+TNS   : 0.000
+
+Type  : Slow 1100mV 0C Model Setup 'current_state'
+Slack : -38.611
+TNS   : -84578.151
+
+Type  : Slow 1100mV 0C Model Setup 'clk'
+Slack : -38.469
+TNS   : -81575.929
+
+Type  : Slow 1100mV 0C Model Hold 'clk'
+Slack : -3.463
+TNS   : -95.336
+
+Type  : Slow 1100mV 0C Model Hold 'current_state'
+Slack : -2.350
+TNS   : -4.296
+
+Type  : Slow 1100mV 0C Model Minimum Pulse Width 'current_state'
+Slack : -0.394
+TNS   : -5990.625
+
+Type  : Slow 1100mV 0C Model Minimum Pulse Width 'clk'
+Slack : -0.394
+TNS   : -1539.498
+
+Type  : Slow 1100mV 0C Model Minimum Pulse Width 'noc_recv.addr[0]'
+Slack : 0.402
+TNS   : 0.000
+
+Type  : Fast 1100mV 85C Model Setup 'clk'
+Slack : -22.258
+TNS   : -47388.931
+
+Type  : Fast 1100mV 85C Model Setup 'current_state'
+Slack : -22.200
+TNS   : -47786.757
+
+Type  : Fast 1100mV 85C Model Hold 'clk'
+Slack : -1.988
+TNS   : -20.383
+
+Type  : Fast 1100mV 85C Model Hold 'current_state'
+Slack : -1.126
+TNS   : -1.498
+
+Type  : Fast 1100mV 85C Model Minimum Pulse Width 'clk'
+Slack : -0.053
+TNS   : -105.874
+
+Type  : Fast 1100mV 85C Model Minimum Pulse Width 'current_state'
+Slack : -0.007
+TNS   : -0.857
+
+Type  : Fast 1100mV 85C Model Minimum Pulse Width 'noc_recv.addr[0]'
+Slack : 0.361
+TNS   : 0.000
+
+Type  : Fast 1100mV 0C Model Setup 'clk'
+Slack : -20.476
+TNS   : -43470.648
+
+Type  : Fast 1100mV 0C Model Setup 'current_state'
+Slack : -20.366
+TNS   : -43593.181
+
+Type  : Fast 1100mV 0C Model Hold 'clk'
+Slack : -1.885
+TNS   : -58.269
+
+Type  : Fast 1100mV 0C Model Hold 'current_state'
+Slack : -1.150
+TNS   : -1.937
+
+Type  : Fast 1100mV 0C Model Minimum Pulse Width 'clk'
+Slack : -0.015
+TNS   : -18.637
+
+Type  : Fast 1100mV 0C Model Minimum Pulse Width 'current_state'
+Slack : 0.003
+TNS   : 0.000
+
+Type  : Fast 1100mV 0C Model Minimum Pulse Width 'noc_recv.addr[0]'
+Slack : 0.363
+TNS   : 0.000
+
+------------------------------------------------------------
