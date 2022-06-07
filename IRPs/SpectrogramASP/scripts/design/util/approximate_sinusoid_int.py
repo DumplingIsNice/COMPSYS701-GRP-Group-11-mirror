@@ -53,7 +53,8 @@ def approximate_sinusoid_int(
         Name of index column.
     y_names: list[str]
         List of data names.
-
+    (cos_w_int: int, sin_nw_int: int)
+        Values used as LUT parameters and initial terms.
     """
     ## Parameter Parsing
     assert math.log2(samples) % 1 == 0
@@ -145,4 +146,4 @@ def approximate_sinusoid_int(
         "y_sin_error",
     ]
 
-    return (df, x_name, y_names)
+    return (df, x_name, y_names, (cos_w_int, sin_nw_int))

@@ -4,7 +4,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-import spectrogram
+import util.spectrogram
 
 
 """Parameters"""
@@ -37,7 +37,7 @@ test_signal += f10k * 2000
 
 
 """Plot DFT"""
-(dft_re, dft_im, dft_magnitude, k_frequencies) = spectrogram.dft(
+(dft_re, dft_im, dft_magnitude, k_frequencies) = util.spectrogram.dft(
     test_signal, sample_frequency
 )
 
@@ -70,7 +70,7 @@ subplot.show()
 
 
 """Plot DFT int16"""
-(dft_re, dft_im, dft_magnitude, k_frequencies) = spectrogram.dft_int16(
+(dft_re, dft_im, dft_magnitude, k_frequencies) = util.spectrogram.dft_int16(
     test_signal, sample_frequency
 )
 
